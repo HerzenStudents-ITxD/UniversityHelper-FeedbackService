@@ -45,10 +45,10 @@ namespace HerzenHelper.FeedbackService
         .GetSection(BaseServiceInfoConfig.SectionName)
         .Get<BaseServiceInfoConfig>();
 
-      Version = "1.0.0.0";
+      Version = "2.0.1.0";
       Description = "FeedbackService is an API that intended to work with feedback.";
       StartTime = DateTime.UtcNow;
-      ApiName = $"LT Digital Office - {_serviceInfoConfig.Name}";
+      ApiName = $"HerzenHelper - {_serviceInfoConfig.Name}";
     }
 
     #region public methods

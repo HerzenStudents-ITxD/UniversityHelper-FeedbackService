@@ -2,7 +2,7 @@
 
 <Project>
 	<PropertyGroup>
-		<TargetFramework>net6.0</TargetFramework>
+		<TargetFramework>net7.0</TargetFramework>
 		<AssemblyName>HerzenHelper.$(MSBuildProjectName)</AssemblyName>
 		<RootNamespace>HerzenHelper.$(MSBuildProjectName)</RootNamespace>
 	</PropertyGroup>
