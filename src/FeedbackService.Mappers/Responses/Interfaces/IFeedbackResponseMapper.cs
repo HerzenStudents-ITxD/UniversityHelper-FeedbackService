@@ -1,8 +1,8 @@
-﻿using HerzenHelper.FeedbackService.Models.Db;
-using HerzenHelper.FeedbackService.Models.Dto;
-using HerzenHelper.Core.Attributes;
+﻿using UniversityHelper.FeedbackService.Models.Db;
+using UniversityHelper.FeedbackService.Models.Dto;
+using UniversityHelper.Core.Attributes;
 
-namespace HerzenHelper.FeedbackService.Mappers.Responses.Interfaces
+namespace UniversityHelper.FeedbackService.Mappers.Responses.Interfaces
 {
   [AutoInject]
   public interface IFeedbackResponseMapper

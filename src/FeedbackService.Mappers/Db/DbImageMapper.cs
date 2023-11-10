@@ -1,9 +1,9 @@
-﻿using HerzenHelper.FeedbackService.Mappers.Db.Interfaces;
-using HerzenHelper.FeedbackService.Models.Db;
-using HerzenHelper.FeedbackService.Models.Dto.Models;
+﻿using UniversityHelper.FeedbackService.Mappers.Db.Interfaces;
+using UniversityHelper.FeedbackService.Models.Db;
+using UniversityHelper.FeedbackService.Models.Dto.Models;
 using System;
 
-namespace HerzenHelper.FeedbackService.Mappers.Db
+namespace UniversityHelper.FeedbackService.Mappers.Db
 {
   public class DbImageMapper : IDbImageMapper
   {

@@ -1,9 +1,9 @@
-﻿using HerzenHelper.FeedbackService.Models.Db;
-using HerzenHelper.FeedbackService.Models.Dto.Models;
-using HerzenHelper.Core.Attributes;
+﻿using UniversityHelper.FeedbackService.Models.Db;
+using UniversityHelper.FeedbackService.Models.Dto.Models;
+using UniversityHelper.Core.Attributes;
 using System;
 
-namespace HerzenHelper.FeedbackService.Mappers.Db.Interfaces
+namespace UniversityHelper.FeedbackService.Mappers.Db.Interfaces
 {
   [AutoInject]
   public interface IDbImageMapper

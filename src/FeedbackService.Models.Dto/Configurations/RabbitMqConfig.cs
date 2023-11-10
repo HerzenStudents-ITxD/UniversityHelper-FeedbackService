@@ -1,6 +1,6 @@
-﻿using HerzenHelper.Core.BrokerSupport.Configurations;
+﻿using UniversityHelper.Core.BrokerSupport.Configurations;
 
-namespace HerzenHelper.FeedbackService.Models.Dto.Configurations
+namespace UniversityHelper.FeedbackService.Models.Dto.Configurations
 {
   public class RabbitMqConfig : BaseRabbitMqConfig
   {

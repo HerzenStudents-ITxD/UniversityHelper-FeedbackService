@@ -1,7 +1,7 @@
-﻿using HerzenHelper.FeedbackService.Models.Dto.Models;
+﻿using UniversityHelper.FeedbackService.Models.Dto.Models;
 using System.Collections.Generic;
 
-namespace HerzenHelper.FeedbackService.Models.Dto
+namespace UniversityHelper.FeedbackService.Models.Dto
 {
   public record FeedbackResponse
   {

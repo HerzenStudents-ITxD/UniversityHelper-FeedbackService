@@ -1,10 +1,10 @@
-﻿using HerzenHelper.FeedbackService.Models.Dto.Enums;
-using HerzenHelper.FeedbackService.Models.Dto.Models;
-using HerzenHelper.Models.Broker.Models;
+﻿using UniversityHelper.FeedbackService.Models.Dto.Enums;
+using UniversityHelper.FeedbackService.Models.Dto.Models;
+using UniversityHelper.Models.Broker.Models;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace HerzenHelper.FeedbackService.Models.Dto.Requests
+namespace UniversityHelper.FeedbackService.Models.Dto.Requests
 {
   public record CreateFeedbackRequest
   {

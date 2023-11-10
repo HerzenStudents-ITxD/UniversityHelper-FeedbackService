@@ -1,11 +1,11 @@
-﻿using HerzenHelper.FeedbackService.Data.Provider.MsSql.Ef;
-using HerzenHelper.FeedbackService.Models.Db;
+﻿using UniversityHelper.FeedbackService.Data.Provider.MsSql.Ef;
+using UniversityHelper.FeedbackService.Models.Db;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using System;
 
-namespace HerzenHelper.OfficeService.Data.Migrations
+namespace UniversityHelper.OfficeService.Data.Migrations
 {
   [DbContext(typeof(FeedbackServiceDbContext))]
   [Migration("20220802120000_InitialMigration")]

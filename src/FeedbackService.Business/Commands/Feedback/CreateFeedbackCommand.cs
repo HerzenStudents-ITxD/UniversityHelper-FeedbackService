@@ -1,12 +1,12 @@
 ﻿using FluentValidation.Results;
-using HerzenHelper.FeedbackService.Business.Commands.Feedback.Interfaces;
-using HerzenHelper.FeedbackService.Data.Interfaces;
-using HerzenHelper.FeedbackService.Mappers.Db.Interfaces;
-using HerzenHelper.FeedbackService.Models.Db;
-using HerzenHelper.FeedbackService.Models.Dto.Requests;
-using HerzenHelper.FeedbackService.Validation.Feedback.Interfaces;
-using HerzenHelper.Core.Helpers.Interfaces;
-using HerzenHelper.Core.Responses;
+using UniversityHelper.FeedbackService.Business.Commands.Feedback.Interfaces;
+using UniversityHelper.FeedbackService.Data.Interfaces;
+using UniversityHelper.FeedbackService.Mappers.Db.Interfaces;
+using UniversityHelper.FeedbackService.Models.Db;
+using UniversityHelper.FeedbackService.Models.Dto.Requests;
+using UniversityHelper.FeedbackService.Validation.Feedback.Interfaces;
+using UniversityHelper.Core.Helpers.Interfaces;
+using UniversityHelper.Core.Responses;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using System;
@@ -14,7 +14,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 
-namespace HerzenHelper.FeedbackService.Business.Commands.Feedback
+namespace UniversityHelper.FeedbackService.Business.Commands.Feedback
 {
   public class CreateFeedbackCommand : ICreateFeedbackCommand
   {

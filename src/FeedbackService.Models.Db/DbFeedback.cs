@@ -1,10 +1,10 @@
-﻿using HerzenHelper.Core.BrokerSupport.Attributes.ParseEntity;
+﻿using UniversityHelper.Core.BrokerSupport.Attributes.ParseEntity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
 using System.Collections.Generic;
 
-namespace HerzenHelper.FeedbackService.Models.Db
+namespace UniversityHelper.FeedbackService.Models.Db
 {
   public class DbFeedback
   {

@@ -1,8 +1,8 @@
-﻿using HerzenHelper.FeedbackService.Models.Dto.Enums;
-using HerzenHelper.Core.Requests;
+﻿using UniversityHelper.FeedbackService.Models.Dto.Enums;
+using UniversityHelper.Core.Requests;
 using Microsoft.AspNetCore.Mvc;
 
-namespace HerzenHelper.FeedbackService.Models.Dto.Requests.Filter
+namespace UniversityHelper.FeedbackService.Models.Dto.Requests.Filter
 {
   public record FindFeedbacksFilter : BaseFindFilter
   {

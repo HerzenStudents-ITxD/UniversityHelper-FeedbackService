@@ -1,4 +1,4 @@
-﻿namespace HerzenHelper.FeedbackService.Models.Dto.Models
+﻿namespace UniversityHelper.FeedbackService.Models.Dto.Models
 {
   public record ImageContent
   {

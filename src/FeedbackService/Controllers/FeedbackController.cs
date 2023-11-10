@@ -1,14 +1,14 @@
-﻿using HerzenHelper.FeedbackService.Business.Commands.Feedback.Interfaces;
-using HerzenHelper.FeedbackService.Models.Dto;
-using HerzenHelper.FeedbackService.Models.Dto.Models;
-using HerzenHelper.FeedbackService.Models.Dto.Requests;
-using HerzenHelper.FeedbackService.Models.Dto.Requests.Filter;
-using HerzenHelper.Core.Responses;
+﻿using UniversityHelper.FeedbackService.Business.Commands.Feedback.Interfaces;
+using UniversityHelper.FeedbackService.Models.Dto;
+using UniversityHelper.FeedbackService.Models.Dto.Models;
+using UniversityHelper.FeedbackService.Models.Dto.Requests;
+using UniversityHelper.FeedbackService.Models.Dto.Requests.Filter;
+using UniversityHelper.Core.Responses;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
 
-namespace HerzenHelper.FeedbackService.Controllers
+namespace UniversityHelper.FeedbackService.Controllers
 {
   [Route("[controller]")]
   [ApiController]

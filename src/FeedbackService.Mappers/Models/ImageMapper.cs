@@ -1,8 +1,8 @@
-﻿using HerzenHelper.FeedbackService.Mappers.Models.Interfaces;
-using HerzenHelper.FeedbackService.Models.Db;
-using HerzenHelper.FeedbackService.Models.Dto.Models;
+﻿using UniversityHelper.FeedbackService.Mappers.Models.Interfaces;
+using UniversityHelper.FeedbackService.Models.Db;
+using UniversityHelper.FeedbackService.Models.Dto.Models;
 
-namespace HerzenHelper.FeedbackService.Mappers.Models
+namespace UniversityHelper.FeedbackService.Mappers.Models
 {
   public class ImageMapper : IImageMapper
   {

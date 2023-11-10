@@ -1,8 +1,8 @@
 ﻿using FluentValidation;
-using HerzenHelper.FeedbackService.Models.Dto.Requests;
-using HerzenHelper.Core.Attributes;
+using UniversityHelper.FeedbackService.Models.Dto.Requests;
+using UniversityHelper.Core.Attributes;
 
-namespace HerzenHelper.FeedbackService.Validation.Feedback.Interfaces
+namespace UniversityHelper.FeedbackService.Validation.Feedback.Interfaces
 {
   [AutoInject]
   public interface IEditFeedbackStatusValidator : IValidator<EditFeedbackStatusesRequest>

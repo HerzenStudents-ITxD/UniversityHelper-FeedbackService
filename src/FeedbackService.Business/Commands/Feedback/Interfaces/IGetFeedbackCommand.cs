@@ -1,10 +1,10 @@
-﻿using HerzenHelper.FeedbackService.Models.Dto;
-using HerzenHelper.Core.Attributes;
-using HerzenHelper.Core.Responses;
+﻿using UniversityHelper.FeedbackService.Models.Dto;
+using UniversityHelper.Core.Attributes;
+using UniversityHelper.Core.Responses;
 using System;
 using System.Threading.Tasks;
 
-namespace HerzenHelper.FeedbackService.Business.Commands.Feedback.Interfaces
+namespace UniversityHelper.FeedbackService.Business.Commands.Feedback.Interfaces
 {
   [AutoInject]
   public interface IGetFeedbackCommand

@@ -1,12 +1,12 @@
-﻿using HerzenHelper.FeedbackService.Models.Db;
-using HerzenHelper.FeedbackService.Models.Dto.Enums;
-using HerzenHelper.FeedbackService.Models.Dto.Requests.Filter;
-using HerzenHelper.Core.Attributes;
+﻿using UniversityHelper.FeedbackService.Models.Db;
+using UniversityHelper.FeedbackService.Models.Dto.Enums;
+using UniversityHelper.FeedbackService.Models.Dto.Requests.Filter;
+using UniversityHelper.Core.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace HerzenHelper.FeedbackService.Data.Interfaces
+namespace UniversityHelper.FeedbackService.Data.Interfaces
 {
   [AutoInject]
   public interface IFeedbackRepository

@@ -1,22 +1,22 @@
-﻿using HerzenHelper.FeedbackService.Business.Commands.Feedback.Interfaces;
-using HerzenHelper.FeedbackService.Data.Interfaces;
-using HerzenHelper.FeedbackService.Mappers.Models.Interfaces;
-using HerzenHelper.FeedbackService.Models.Db;
-using HerzenHelper.FeedbackService.Models.Dto.Models;
-using HerzenHelper.FeedbackService.Models.Dto.Requests.Filter;
-using HerzenHelper.Core.BrokerSupport.AccessValidatorEngine.Interfaces;
-using HerzenHelper.Core.Extensions;
-using HerzenHelper.Core.FluentValidationExtensions;
-using HerzenHelper.Core.Helpers.Interfaces;
-using HerzenHelper.Core.Responses;
-using HerzenHelper.Core.Validators.Interfaces;
+﻿using UniversityHelper.FeedbackService.Business.Commands.Feedback.Interfaces;
+using UniversityHelper.FeedbackService.Data.Interfaces;
+using UniversityHelper.FeedbackService.Mappers.Models.Interfaces;
+using UniversityHelper.FeedbackService.Models.Db;
+using UniversityHelper.FeedbackService.Models.Dto.Models;
+using UniversityHelper.FeedbackService.Models.Dto.Requests.Filter;
+using UniversityHelper.Core.BrokerSupport.AccessValidatorEngine.Interfaces;
+using UniversityHelper.Core.Extensions;
+using UniversityHelper.Core.FluentValidationExtensions;
+using UniversityHelper.Core.Helpers.Interfaces;
+using UniversityHelper.Core.Responses;
+using UniversityHelper.Core.Validators.Interfaces;
 using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 
-namespace HerzenHelper.FeedbackService.Business.Commands.Feedback
+namespace UniversityHelper.FeedbackService.Business.Commands.Feedback
 {
   public class FindFeedbacksCommand : IFindFeedbacksCommand
   {

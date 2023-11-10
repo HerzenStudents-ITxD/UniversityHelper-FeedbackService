@@ -1,15 +1,15 @@
-﻿using HerzenHelper.FeedbackService.Data.Interfaces;
-using HerzenHelper.FeedbackService.Data.Provider;
-using HerzenHelper.FeedbackService.Models.Db;
-using HerzenHelper.FeedbackService.Models.Dto.Enums;
-using HerzenHelper.FeedbackService.Models.Dto.Requests.Filter;
+﻿using UniversityHelper.FeedbackService.Data.Interfaces;
+using UniversityHelper.FeedbackService.Data.Provider;
+using UniversityHelper.FeedbackService.Models.Db;
+using UniversityHelper.FeedbackService.Models.Dto.Enums;
+using UniversityHelper.FeedbackService.Models.Dto.Requests.Filter;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace HerzenHelper.FeedbackService.Data
+namespace UniversityHelper.FeedbackService.Data
 {
   public class FeedbackRepository : IFeedbackRepository
   {

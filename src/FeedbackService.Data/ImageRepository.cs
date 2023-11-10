@@ -1,12 +1,12 @@
-﻿using HerzenHelper.FeedbackService.Data.Interfaces;
-using HerzenHelper.FeedbackService.Data.Provider;
-using HerzenHelper.FeedbackService.Models.Db;
+﻿using UniversityHelper.FeedbackService.Data.Interfaces;
+using UniversityHelper.FeedbackService.Data.Provider;
+using UniversityHelper.FeedbackService.Models.Db;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace HerzenHelper.FeedbackService.Data
+namespace UniversityHelper.FeedbackService.Data
 {
   public class ImageRepository : IImageRepository
   {

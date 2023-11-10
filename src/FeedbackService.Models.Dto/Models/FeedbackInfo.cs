@@ -1,7 +1,7 @@
-﻿using HerzenHelper.FeedbackService.Models.Dto.Enums;
+﻿using UniversityHelper.FeedbackService.Models.Dto.Enums;
 using System;
 
-namespace HerzenHelper.FeedbackService.Models.Dto.Models
+namespace UniversityHelper.FeedbackService.Models.Dto.Models
 {
   public record FeedbackInfo
   {

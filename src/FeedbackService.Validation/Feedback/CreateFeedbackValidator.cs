@@ -1,8 +1,8 @@
 ﻿using FluentValidation;
-using HerzenHelper.FeedbackService.Models.Dto.Requests;
-using HerzenHelper.FeedbackService.Validation.Feedback.Interfaces;
+using UniversityHelper.FeedbackService.Models.Dto.Requests;
+using UniversityHelper.FeedbackService.Validation.Feedback.Interfaces;
 
-namespace HerzenHelper.FeedbackService.Validation.Feedback
+namespace UniversityHelper.FeedbackService.Validation.Feedback
 {
   public class CreateFeedbackValidator : AbstractValidator<CreateFeedbackRequest>, ICreateFeedbackValidator
   {

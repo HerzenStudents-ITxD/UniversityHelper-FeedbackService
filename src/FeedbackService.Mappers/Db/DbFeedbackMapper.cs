@@ -1,11 +1,11 @@
-﻿using HerzenHelper.FeedbackService.Mappers.Db.Interfaces;
-using HerzenHelper.FeedbackService.Models.Db;
-using HerzenHelper.FeedbackService.Models.Dto.Enums;
-using HerzenHelper.FeedbackService.Models.Dto.Requests;
+﻿using UniversityHelper.FeedbackService.Mappers.Db.Interfaces;
+using UniversityHelper.FeedbackService.Models.Db;
+using UniversityHelper.FeedbackService.Models.Dto.Enums;
+using UniversityHelper.FeedbackService.Models.Dto.Requests;
 using System;
 using System.Linq;
 
-namespace HerzenHelper.FeedbackService.Mappers.Db
+namespace UniversityHelper.FeedbackService.Mappers.Db
 {
   public class DbFeedbackMapper : IDbFeedbackMapper
   {

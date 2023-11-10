@@ -1,10 +1,10 @@
-﻿using HerzenHelper.FeedbackService.Mappers.Models.Interfaces;
-using HerzenHelper.FeedbackService.Mappers.Responses.Interfaces;
-using HerzenHelper.FeedbackService.Models.Db;
-using HerzenHelper.FeedbackService.Models.Dto;
+﻿using UniversityHelper.FeedbackService.Mappers.Models.Interfaces;
+using UniversityHelper.FeedbackService.Mappers.Responses.Interfaces;
+using UniversityHelper.FeedbackService.Models.Db;
+using UniversityHelper.FeedbackService.Models.Dto;
 using System.Linq;
 
-namespace HerzenHelper.FeedbackService.Mappers.Responses
+namespace UniversityHelper.FeedbackService.Mappers.Responses
 {
   public class FeedbackResponseMapper : IFeedbackResponseMapper
   {

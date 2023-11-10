@@ -1,15 +1,15 @@
 ﻿using HealthChecks.UI.Client;
-using HerzenHelper.FeedbackService.Data.Provider.MsSql.Ef;
-using HerzenHelper.FeedbackService.Models.Dto.Configurations;
-using HerzenHelper.Core.BrokerSupport.Configurations;
-using HerzenHelper.Core.BrokerSupport.Extensions;
-using HerzenHelper.Core.BrokerSupport.Helpers;
-using HerzenHelper.Core.BrokerSupport.Middlewares.Token;
-using HerzenHelper.Core.Configurations;
-using HerzenHelper.Core.EFSupport.Extensions;
-using HerzenHelper.Core.EFSupport.Helpers;
-using HerzenHelper.Core.Extensions;
-using HerzenHelper.Core.Middlewares.ApiInformation;
+using UniversityHelper.FeedbackService.Data.Provider.MsSql.Ef;
+using UniversityHelper.FeedbackService.Models.Dto.Configurations;
+using UniversityHelper.Core.BrokerSupport.Configurations;
+using UniversityHelper.Core.BrokerSupport.Extensions;
+using UniversityHelper.Core.BrokerSupport.Helpers;
+using UniversityHelper.Core.BrokerSupport.Middlewares.Token;
+using UniversityHelper.Core.Configurations;
+using UniversityHelper.Core.EFSupport.Extensions;
+using UniversityHelper.Core.EFSupport.Helpers;
+using UniversityHelper.Core.Extensions;
+using UniversityHelper.Core.Middlewares.ApiInformation;
 using MassTransit;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
@@ -22,7 +22,7 @@ using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
-namespace HerzenHelper.FeedbackService
+namespace UniversityHelper.FeedbackService
 {
   public class Startup : BaseApiInfo
   {
@@ -48,7 +48,7 @@ namespace HerzenHelper.FeedbackService
       Version = "2.0.1.0";
       Description = "FeedbackService is an API that intended to work with feedback.";
       StartTime = DateTime.UtcNow;
-      ApiName = $"HerzenHelper - {_serviceInfoConfig.Name}";
+      ApiName = $"UniversityHelper - {_serviceInfoConfig.Name}";
     }
 
     #region public methods

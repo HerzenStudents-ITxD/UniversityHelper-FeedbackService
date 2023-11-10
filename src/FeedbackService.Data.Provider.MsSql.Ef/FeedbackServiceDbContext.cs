@@ -1,9 +1,9 @@
-﻿using HerzenHelper.FeedbackService.Models.Db;
+﻿using UniversityHelper.FeedbackService.Models.Db;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 using System.Threading.Tasks;
 
-namespace HerzenHelper.FeedbackService.Data.Provider.MsSql.Ef
+namespace UniversityHelper.FeedbackService.Data.Provider.MsSql.Ef
 {
   public class FeedbackServiceDbContext : DbContext, IDataProvider
   {
@@ -18,7 +18,7 @@ namespace HerzenHelper.FeedbackService.Data.Provider.MsSql.Ef
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-      modelBuilder.ApplyConfigurationsFromAssembly(Assembly.Load("HerzenHelper.FeedbackService.Models.Db"));
+      modelBuilder.ApplyConfigurationsFromAssembly(Assembly.Load("UniversityHelper.FeedbackService.Models.Db"));
     }
 
     public void Save()

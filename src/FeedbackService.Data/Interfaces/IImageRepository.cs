@@ -1,10 +1,10 @@
-﻿using HerzenHelper.Core.Attributes;
+﻿using UniversityHelper.Core.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using HerzenHelper.FeedbackService.Models.Db;
+using UniversityHelper.FeedbackService.Models.Db;
 
-namespace HerzenHelper.FeedbackService.Data.Interfaces
+namespace UniversityHelper.FeedbackService.Data.Interfaces
 {
   [AutoInject]
   public interface IImageRepository
