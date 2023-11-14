@@ -2,20 +2,19 @@
 using UniversityHelper.FeedbackService.Models.Db;
 using UniversityHelper.FeedbackService.Models.Dto.Models;
 
-namespace UniversityHelper.FeedbackService.Mappers.Models
+namespace UniversityHelper.FeedbackService.Mappers.Models;
+
+public class ImageMapper : IImageMapper
 {
-  public class ImageMapper : IImageMapper
+  public ImageContent Map(DbImage dbImage)
   {
-    public ImageContent Map(DbImage dbImage)
-    {
-      return dbImage is null
-        ? null
-        : new()
-        {
-          Name = dbImage.Name,
-          Content = dbImage.Content,
-          Extension = dbImage.Extension
-        };
-    }
+    return dbImage is null
+      ? null
+      : new()
+      {
+        Name = dbImage.Name,
+        Content = dbImage.Content,
+        Extension = dbImage.Extension
+      };
   }
 }

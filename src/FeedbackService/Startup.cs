@@ -22,140 +22,139 @@ using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
-namespace UniversityHelper.FeedbackService
+namespace UniversityHelper.FeedbackService;
+
+public class Startup : BaseApiInfo
 {
-  public class Startup : BaseApiInfo
+  public const string CorsPolicyName = "LtDoCorsPolicy";
+
+  private readonly RabbitMqConfig _rabbitMqConfig;
+  private readonly BaseServiceInfoConfig _serviceInfoConfig;
+
+  private IConfiguration Configuration { get; }
+
+  public Startup(IConfiguration configuration)
   {
-    public const string CorsPolicyName = "LtDoCorsPolicy";
+    Configuration = configuration;
 
-    private readonly RabbitMqConfig _rabbitMqConfig;
-    private readonly BaseServiceInfoConfig _serviceInfoConfig;
+    _rabbitMqConfig = Configuration
+      .GetSection(BaseRabbitMqConfig.SectionName)
+      .Get<RabbitMqConfig>();
 
-    private IConfiguration Configuration { get; }
+    _serviceInfoConfig = Configuration
+      .GetSection(BaseServiceInfoConfig.SectionName)
+      .Get<BaseServiceInfoConfig>();
 
-    public Startup(IConfiguration configuration)
-    {
-      Configuration = configuration;
-
-      _rabbitMqConfig = Configuration
-        .GetSection(BaseRabbitMqConfig.SectionName)
-        .Get<RabbitMqConfig>();
-
-      _serviceInfoConfig = Configuration
-        .GetSection(BaseServiceInfoConfig.SectionName)
-        .Get<BaseServiceInfoConfig>();
-
-      Version = "2.0.1.0";
-      Description = "FeedbackService is an API that intended to work with feedback.";
-      StartTime = DateTime.UtcNow;
-      ApiName = $"UniversityHelper - {_serviceInfoConfig.Name}";
-    }
-
-    #region public methods
-
-    public void ConfigureServices(IServiceCollection services)
-    {
-      services.AddCors(options =>
-      {
-        options.AddPolicy(
-          CorsPolicyName,
-          builder =>
-          {
-            builder
-              .AllowAnyOrigin()
-              .AllowAnyHeader()
-              .AllowAnyMethod();
-          });
-      });
-
-      services.Configure<TokenConfiguration>(Configuration.GetSection("CheckTokenMiddleware"));
-      services.Configure<BaseRabbitMqConfig>(Configuration.GetSection(BaseRabbitMqConfig.SectionName));
-      services.Configure<BaseServiceInfoConfig>(Configuration.GetSection(BaseServiceInfoConfig.SectionName));
-
-      services.AddHttpContextAccessor();
-      services
-        .AddControllers()
-        .AddJsonOptions(options =>
-        {
-          options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-        })
-        .AddNewtonsoftJson();
-
-      string connStr = ConnectionStringHandler.Get(Configuration);
-
-      services.AddDbContext<FeedbackServiceDbContext>(options =>
-      {
-        options.UseSqlServer(connStr);
-      });
-
-      services.AddHealthChecks()
-        .AddSqlServer(connStr)
-        .AddRabbitMqCheck();
-
-      services.AddBusinessObjects();
-
-      ConfigureMassTransit(services);
-    }
-
-    public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory)
-    {
-      app.UpdateDatabase<FeedbackServiceDbContext>();
-
-      app.UseForwardedHeaders();
-
-      app.UseExceptionsHandler(loggerFactory);
-
-      app.UseApiInformation();
-
-      app.UseRouting();
-
-      app.UseMiddleware<TokenMiddleware>();
-
-      app.UseCors(CorsPolicyName);
-
-      app.UseEndpoints(endpoints =>
-      {
-        endpoints.MapControllers().RequireCors(CorsPolicyName);
-
-        endpoints.MapHealthChecks($"/{_serviceInfoConfig.Id}/hc", new HealthCheckOptions
-        {
-          ResultStatusCodes = new Dictionary<HealthStatus, int>
-          {
-            { HealthStatus.Unhealthy, 200 },
-            { HealthStatus.Healthy, 200 },
-            { HealthStatus.Degraded, 200 },
-          },
-          Predicate = check => check.Name != "masstransit-bus",
-          ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
-        });
-      });
-    }
-
-    #endregion
-
-    #region private methods
-
-    private void ConfigureMassTransit(IServiceCollection services)
-    {
-      (string username, string password) = RabbitMqCredentialsHelper
-        .Get(_rabbitMqConfig, _serviceInfoConfig);
-      services.AddMassTransit(x =>
-      {
-        x.UsingRabbitMq((_, cfg) =>
-        {
-          cfg.Host(_rabbitMqConfig.Host, "/", host =>
-          {
-            host.Username(username);
-            host.Password(password);
-          });
-        });
-
-        x.AddRequestClients(_rabbitMqConfig);
-      });
-
-      services.AddMassTransitHostedService();
-    }
-
-    #endregion
+    Version = "2.0.1.0";
+    Description = "FeedbackService is an API that intended to work with feedback.";
+    StartTime = DateTime.UtcNow;
+    ApiName = $"UniversityHelper - {_serviceInfoConfig.Name}";
   }
+
+  #region public methods
+
+  public void ConfigureServices(IServiceCollection services)
+  {
+    services.AddCors(options =>
+    {
+      options.AddPolicy(
+        CorsPolicyName,
+        builder =>
+        {
+          builder
+            .AllowAnyOrigin()
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+        });
+    });
+
+    services.Configure<TokenConfiguration>(Configuration.GetSection("CheckTokenMiddleware"));
+    services.Configure<BaseRabbitMqConfig>(Configuration.GetSection(BaseRabbitMqConfig.SectionName));
+    services.Configure<BaseServiceInfoConfig>(Configuration.GetSection(BaseServiceInfoConfig.SectionName));
+
+    services.AddHttpContextAccessor();
+    services
+      .AddControllers()
+      .AddJsonOptions(options =>
+      {
+        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+      })
+      .AddNewtonsoftJson();
+
+    string connStr = ConnectionStringHandler.Get(Configuration);
+
+    services.AddDbContext<FeedbackServiceDbContext>(options =>
+    {
+      options.UseSqlServer(connStr);
+    });
+
+    services.AddHealthChecks()
+      .AddSqlServer(connStr)
+      .AddRabbitMqCheck();
+
+    services.AddBusinessObjects();
+
+    ConfigureMassTransit(services);
+  }
+
+  public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory)
+  {
+    app.UpdateDatabase<FeedbackServiceDbContext>();
+
+    app.UseForwardedHeaders();
+
+    app.UseExceptionsHandler(loggerFactory);
+
+    app.UseApiInformation();
+
+    app.UseRouting();
+
+    app.UseMiddleware<TokenMiddleware>();
+
+    app.UseCors(CorsPolicyName);
+
+    app.UseEndpoints(endpoints =>
+    {
+      endpoints.MapControllers().RequireCors(CorsPolicyName);
+
+      endpoints.MapHealthChecks($"/{_serviceInfoConfig.Id}/hc", new HealthCheckOptions
+      {
+        ResultStatusCodes = new Dictionary<HealthStatus, int>
+        {
+          { HealthStatus.Unhealthy, 200 },
+          { HealthStatus.Healthy, 200 },
+          { HealthStatus.Degraded, 200 },
+        },
+        Predicate = check => check.Name != "masstransit-bus",
+        ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+      });
+    });
+  }
+
+  #endregion
+
+  #region private methods
+
+  private void ConfigureMassTransit(IServiceCollection services)
+  {
+    (string username, string password) = RabbitMqCredentialsHelper
+      .Get(_rabbitMqConfig, _serviceInfoConfig);
+    services.AddMassTransit(x =>
+    {
+      x.UsingRabbitMq((_, cfg) =>
+      {
+        cfg.Host(_rabbitMqConfig.Host, "/", host =>
+        {
+          host.Username(username);
+          host.Password(password);
+        });
+      });
+
+      x.AddRequestClients(_rabbitMqConfig);
+    });
+
+    services.AddMassTransitHostedService();
+  }
+
+  #endregion
 }

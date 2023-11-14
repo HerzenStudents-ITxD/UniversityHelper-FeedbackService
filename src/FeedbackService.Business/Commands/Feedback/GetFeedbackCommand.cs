@@ -12,51 +12,50 @@ using System;
 using System.Net;
 using System.Threading.Tasks;
 
-namespace UniversityHelper.FeedbackService.Business.Commands.Feedback
+namespace UniversityHelper.FeedbackService.Business.Commands.Feedback;
+
+public class GetFeedbackCommand : IGetFeedbackCommand
 {
-  public class GetFeedbackCommand : IGetFeedbackCommand
+  private readonly IAccessValidator _accessValidator;
+  private readonly IResponseCreator _responseCreator;
+  private readonly IHttpContextAccessor _httpContextAccessor;
+  private readonly IFeedbackRepository _repository;
+  private readonly IFeedbackResponseMapper _mapper;
+
+  public GetFeedbackCommand(
+    IAccessValidator accessValidator,
+    IResponseCreator responseCreator,
+    IHttpContextAccessor httpContextAccessor,
+    IFeedbackRepository repository,
+    IFeedbackResponseMapper mapper)
   {
-    private readonly IAccessValidator _accessValidator;
-    private readonly IResponseCreator _responseCreator;
-    private readonly IHttpContextAccessor _httpContextAccessor;
-    private readonly IFeedbackRepository _repository;
-    private readonly IFeedbackResponseMapper _mapper;
+    _accessValidator = accessValidator;
+    _responseCreator = responseCreator;
+    _httpContextAccessor = httpContextAccessor;
+    _repository = repository;
+    _mapper = mapper;
+  }
 
-    public GetFeedbackCommand(
-      IAccessValidator accessValidator,
-      IResponseCreator responseCreator,
-      IHttpContextAccessor httpContextAccessor,
-      IFeedbackRepository repository,
-      IFeedbackResponseMapper mapper)
+  public async Task<OperationResultResponse<FeedbackResponse>> ExecuteAsync(Guid feedbackId)
+  {
+    if (!await _accessValidator.IsAdminAsync(_httpContextAccessor.HttpContext.GetUserId()))
     {
-      _accessValidator = accessValidator;
-      _responseCreator = responseCreator;
-      _httpContextAccessor = httpContextAccessor;
-      _repository = repository;
-      _mapper = mapper;
+      return _responseCreator.CreateFailureResponse<FeedbackResponse>(HttpStatusCode.Forbidden);
     }
 
-    public async Task<OperationResultResponse<FeedbackResponse>> ExecuteAsync(Guid feedbackId)
+    if (feedbackId == default)
     {
-      if (!await _accessValidator.IsAdminAsync(_httpContextAccessor.HttpContext.GetUserId()))
-      {
-        return _responseCreator.CreateFailureResponse<FeedbackResponse>(HttpStatusCode.Forbidden);
-      }
-
-      if (feedbackId == default)
-      {
-        return _responseCreator.CreateFailureResponse<FeedbackResponse>(HttpStatusCode.BadRequest);
-      }
-
-      DbFeedback feedback = await _repository.GetAsync(feedbackId);
-
-      if (feedback is null)
-      {
-        _responseCreator.CreateFailureResponse<FeedbackResponse>(HttpStatusCode.NotFound);
-      }
-
-      return new OperationResultResponse<FeedbackResponse>(
-        body: _mapper.Map(feedback));
+      return _responseCreator.CreateFailureResponse<FeedbackResponse>(HttpStatusCode.BadRequest);
     }
+
+    DbFeedback feedback = await _repository.GetAsync(feedbackId);
+
+    if (feedback is null)
+    {
+      _responseCreator.CreateFailureResponse<FeedbackResponse>(HttpStatusCode.NotFound);
+    }
+
+    return new OperationResultResponse<FeedbackResponse>(
+      body: _mapper.Map(feedback));
   }
 }

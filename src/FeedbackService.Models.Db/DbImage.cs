@@ -3,31 +3,30 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
 using UniversityHelper.Core.BrokerSupport.Attributes.ParseEntity;
 
-namespace UniversityHelper.FeedbackService.Models.Db
+namespace UniversityHelper.FeedbackService.Models.Db;
+
+public class DbImage
 {
-  public class DbImage
+  public const string TableName = "Images";
+  public Guid Id { get; set; }
+  public Guid FeedbackId { get; set; }
+  public string Name { get; set; }
+  public string Content { get; set; }
+  public string Extension { get; set; }
+  public DateTime CreatedAtUtc { get; set; }
+
+  [IgnoreParse]
+  public DbFeedback Feedback { get; set; }
+}
+
+public class DbImageConfiguration : IEntityTypeConfiguration<DbImage>
+{
+  public void Configure(EntityTypeBuilder<DbImage> builder)
   {
-    public const string TableName = "Images";
-    public Guid Id { get; set; }
-    public Guid FeedbackId { get; set; }
-    public string Name { get; set; }
-    public string Content { get; set; }
-    public string Extension { get; set; }
-    public DateTime CreatedAtUtc { get; set; }
+    builder
+      .ToTable(DbImage.TableName);
 
-    [IgnoreParse]
-    public DbFeedback Feedback { get; set; }
-  }
-
-  public class DbImageConfiguration : IEntityTypeConfiguration<DbImage>
-  {
-    public void Configure(EntityTypeBuilder<DbImage> builder)
-    {
-      builder
-        .ToTable(DbImage.TableName);
-
-      builder
-        .HasKey(i => i.Id);
-    }
+    builder
+      .HasKey(i => i.Id);
   }
 }

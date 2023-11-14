@@ -2,10 +2,9 @@
 using UniversityHelper.FeedbackService.Models.Dto.Requests;
 using UniversityHelper.Core.Attributes;
 
-namespace UniversityHelper.FeedbackService.Validation.Feedback.Interfaces
+namespace UniversityHelper.FeedbackService.Validation.Feedback.Interfaces;
+
+[AutoInject]
+public interface ICreateFeedbackValidator : IValidator<CreateFeedbackRequest>
 {
-  [AutoInject]
-  public interface ICreateFeedbackValidator : IValidator<CreateFeedbackRequest>
-  {
-  }
 }

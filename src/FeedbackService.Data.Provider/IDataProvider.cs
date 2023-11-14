@@ -4,12 +4,11 @@ using UniversityHelper.Core.EFSupport.Provider;
 using UniversityHelper.Core.Enums;
 using Microsoft.EntityFrameworkCore;
 
-namespace UniversityHelper.FeedbackService.Data.Provider
+namespace UniversityHelper.FeedbackService.Data.Provider;
+
+[AutoInject(InjectType.Scoped)]
+public interface IDataProvider : IBaseDataProvider
 {
-  [AutoInject(InjectType.Scoped)]
-  public interface IDataProvider : IBaseDataProvider
-  {
-    DbSet<DbFeedback> Feedbacks { get; set; }
-    DbSet<DbImage> Images { get; set; }
-  }
+  DbSet<DbFeedback> Feedbacks { get; set; }
+  DbSet<DbImage> Images { get; set; }
 }

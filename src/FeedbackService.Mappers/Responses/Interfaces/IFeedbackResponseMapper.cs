@@ -2,11 +2,10 @@
 using UniversityHelper.FeedbackService.Models.Dto;
 using UniversityHelper.Core.Attributes;
 
-namespace UniversityHelper.FeedbackService.Mappers.Responses.Interfaces
+namespace UniversityHelper.FeedbackService.Mappers.Responses.Interfaces;
+
+[AutoInject]
+public interface IFeedbackResponseMapper
 {
-  [AutoInject]
-  public interface IFeedbackResponseMapper
-  {
-    FeedbackResponse Map(DbFeedback dbFeedback);
-  }
+  FeedbackResponse Map(DbFeedback dbFeedback);
 }

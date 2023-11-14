@@ -3,14 +3,13 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace UniversityHelper.FeedbackService.Models.Dto.Requests
-{
-  public record EditFeedbackStatusesRequest
-  {
-    [Required]
-    public List<Guid> FeedbackIds;
+namespace UniversityHelper.FeedbackService.Models.Dto.Requests;
 
-    [Required]
-    public FeedbackStatusType Status;
-  }
+public record EditFeedbackStatusesRequest
+{
+  [Required]
+  public List<Guid> FeedbackIds;
+
+  [Required]
+  public FeedbackStatusType Status;
 }

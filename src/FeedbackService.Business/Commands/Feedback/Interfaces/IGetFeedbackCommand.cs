@@ -4,11 +4,10 @@ using UniversityHelper.Core.Responses;
 using System;
 using System.Threading.Tasks;
 
-namespace UniversityHelper.FeedbackService.Business.Commands.Feedback.Interfaces
+namespace UniversityHelper.FeedbackService.Business.Commands.Feedback.Interfaces;
+
+[AutoInject]
+public interface IGetFeedbackCommand
 {
-  [AutoInject]
-  public interface IGetFeedbackCommand
-  {
-    Task<OperationResultResponse<FeedbackResponse>> ExecuteAsync(Guid feedbackId);
-  }
+  Task<OperationResultResponse<FeedbackResponse>> ExecuteAsync(Guid feedbackId);
 }

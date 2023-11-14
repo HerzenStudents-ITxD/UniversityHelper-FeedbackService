@@ -4,11 +4,10 @@ using UniversityHelper.Core.Attributes;
 using UniversityHelper.Core.Responses;
 using System.Threading.Tasks;
 
-namespace UniversityHelper.FeedbackService.Business.Commands.Feedback.Interfaces
+namespace UniversityHelper.FeedbackService.Business.Commands.Feedback.Interfaces;
+
+[AutoInject]
+public interface IFindFeedbacksCommand
 {
-  [AutoInject]
-  public interface IFindFeedbacksCommand
-  {
-    Task<FindResultResponse<FeedbackInfo>> ExecuteAsync(FindFeedbacksFilter filter);
-  }
+  Task<FindResultResponse<FeedbackInfo>> ExecuteAsync(FindFeedbacksFilter filter);
 }

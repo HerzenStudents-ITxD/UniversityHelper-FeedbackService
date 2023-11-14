@@ -6,27 +6,26 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace UniversityHelper.FeedbackService.Data
+namespace UniversityHelper.FeedbackService.Data;
+
+public class ImageRepository : IImageRepository
 {
-  public class ImageRepository : IImageRepository
+  private readonly IDataProvider _provider;
+
+  public ImageRepository(IDataProvider provider)
   {
-    private readonly IDataProvider _provider;
+    _provider = provider;
+  }
 
-    public ImageRepository(IDataProvider provider)
+  public async Task<List<Guid>> CreateAsync(List<DbImage> dbImages)
+  {
+    if (dbImages is null || !dbImages.Any())
     {
-      _provider = provider;
+      return null;
     }
 
-    public async Task<List<Guid>> CreateAsync(List<DbImage> dbImages)
-    {
-      if (dbImages is null || !dbImages.Any())
-      {
-        return null;
-      }
+    await _provider.Images.AddRangeAsync(dbImages);
 
-      await _provider.Images.AddRangeAsync(dbImages);
-
-      return dbImages.Select(i => i.Id).ToList();
-    }
+    return dbImages.Select(i => i.Id).ToList();
   }
 }

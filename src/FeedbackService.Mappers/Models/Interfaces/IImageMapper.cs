@@ -2,11 +2,10 @@
 using UniversityHelper.FeedbackService.Models.Dto.Models;
 using UniversityHelper.Core.Attributes;
 
-namespace UniversityHelper.FeedbackService.Mappers.Models.Interfaces
+namespace UniversityHelper.FeedbackService.Mappers.Models.Interfaces;
+
+[AutoInject]
+public interface IImageMapper
 {
-  [AutoInject]
-  public interface IImageMapper
-  {
-    ImageContent Map(DbImage dbImage);
-  }
+  ImageContent Map(DbImage dbImage);
 }

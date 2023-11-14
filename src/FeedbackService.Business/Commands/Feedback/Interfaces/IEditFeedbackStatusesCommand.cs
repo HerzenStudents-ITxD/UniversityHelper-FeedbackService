@@ -3,11 +3,10 @@ using UniversityHelper.Core.Attributes;
 using UniversityHelper.Core.Responses;
 using System.Threading.Tasks;
 
-namespace UniversityHelper.FeedbackService.Business.Commands.Feedback.Interfaces
+namespace UniversityHelper.FeedbackService.Business.Commands.Feedback.Interfaces;
+
+[AutoInject]
+public interface IEditFeedbackStatusesCommand
 {
-  [AutoInject]
-  public interface IEditFeedbackStatusesCommand
-  {
-    Task<OperationResultResponse<bool>> ExecuteAsync(EditFeedbackStatusesRequest request);
-  }
+  Task<OperationResultResponse<bool>> ExecuteAsync(EditFeedbackStatusesRequest request);
 }
