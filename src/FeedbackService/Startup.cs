@@ -21,6 +21,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
+using Microsoft.OpenApi.Models;
 
 namespace UniversityHelper.FeedbackService;
 
@@ -45,13 +46,11 @@ public class Startup : BaseApiInfo
       .GetSection(BaseServiceInfoConfig.SectionName)
       .Get<BaseServiceInfoConfig>();
 
-    Version = "2.0.1.0";
+    Version = "2.0.2.0";
     Description = "FeedbackService is an API that intended to work with feedback.";
     StartTime = DateTime.UtcNow;
     ApiName = $"UniversityHelper - {_serviceInfoConfig.Name}";
   }
-
-  #region public methods
 
   public void ConfigureServices(IServiceCollection services)
   {
@@ -94,7 +93,19 @@ public class Startup : BaseApiInfo
 
     services.AddBusinessObjects();
 
-    ConfigureMassTransit(services);
+    services.ConfigureMassTransit(_rabbitMqConfig);
+
+    services.AddSwaggerGen(options =>
+    {
+      options.SwaggerDoc($"{Version}", new OpenApiInfo
+      {
+        Version = Version,
+        Title = _serviceInfoConfig.Name,
+        Description = Description
+      });
+
+      options.EnableAnnotations();
+    });
   }
 
   public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory)
@@ -129,32 +140,11 @@ public class Startup : BaseApiInfo
         ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
       });
     });
-  }
 
-  #endregion
-
-  #region private methods
-
-  private void ConfigureMassTransit(IServiceCollection services)
-  {
-    (string username, string password) = RabbitMqCredentialsHelper
-      .Get(_rabbitMqConfig, _serviceInfoConfig);
-    services.AddMassTransit(x =>
-    {
-      x.UsingRabbitMq((_, cfg) =>
+    app.UseSwagger()
+      .UseSwaggerUI(options =>
       {
-        cfg.Host(_rabbitMqConfig.Host, "/", host =>
-        {
-          host.Username(username);
-          host.Password(password);
-        });
+        options.SwaggerEndpoint($"/swagger/{Version}/swagger.json", $"{Version}");
       });
-
-      x.AddRequestClients(_rabbitMqConfig);
-    });
-
-    services.AddMassTransitHostedService();
   }
-
-  #endregion
 }
