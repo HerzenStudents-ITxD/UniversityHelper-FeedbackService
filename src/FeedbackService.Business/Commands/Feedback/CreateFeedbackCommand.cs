@@ -14,57 +14,61 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 
-namespace UniversityHelper.FeedbackService.Business.Commands.Feedback;
-
-public class CreateFeedbackCommand : ICreateFeedbackCommand
+namespace UniversityHelper.FeedbackService.Business.Commands.Feedback
 {
-  private readonly IFeedbackRepository _feedbackRepository;
-  private readonly ICreateFeedbackValidator _validator;
-  private readonly IHttpContextAccessor _httpContextAccessor;
-  private readonly IDbFeedbackMapper _feedbackMapper;
-  private readonly IResponseCreator _responseCreator;
-  private readonly ILogger<CreateFeedbackCommand> _logger;
-
-  public CreateFeedbackCommand(
-    IFeedbackRepository feedbackRepository,
-    ICreateFeedbackValidator validator,
-    IHttpContextAccessor httpContextAccessor,
-    IDbFeedbackMapper feedbackMapper,
-    IResponseCreator responseCreator,
-    ILogger<CreateFeedbackCommand> logger)
+  /// <summary>
+  /// Command to create a new feedback.
+  /// </summary>
+  public class CreateFeedbackCommand : ICreateFeedbackCommand
   {
-    _feedbackRepository = feedbackRepository;
-    _validator = validator;
-    _httpContextAccessor = httpContextAccessor;
-    _feedbackMapper = feedbackMapper;
-    _responseCreator = responseCreator;
-    _logger = logger;
-  }
+    private readonly IFeedbackRepository _feedbackRepository;
+    private readonly ICreateFeedbackValidator _validator;
+    private readonly IHttpContextAccessor _httpContextAccessor;
+    private readonly IDbFeedbackMapper _feedbackMapper;
+    private readonly IResponseCreator _responseCreator;
+    private readonly ILogger<CreateFeedbackCommand> _logger;
 
-  public async Task<OperationResultResponse<Guid?>> ExecuteAsync(CreateFeedbackRequest request)
-  {
-    var s = _httpContextAccessor.HttpContext.Connection.RemoteIpAddress;
-
-    _logger.LogInformation($"Remote IP is {s}. User {request?.User?.FirstName}");
-
-    ValidationResult validationResult = await _validator.ValidateAsync(request);
-
-    if (!validationResult.IsValid)
+    public CreateFeedbackCommand(
+        IFeedbackRepository feedbackRepository,
+        ICreateFeedbackValidator validator,
+        IHttpContextAccessor httpContextAccessor,
+        IDbFeedbackMapper feedbackMapper,
+        IResponseCreator responseCreator,
+        ILogger<CreateFeedbackCommand> logger)
     {
-      return _responseCreator.CreateFailureResponse<Guid?>(
-        HttpStatusCode.BadRequest,
-        validationResult.Errors.Select(vf => vf.ErrorMessage).ToList());
+      _feedbackRepository = feedbackRepository;
+      _validator = validator;
+      _httpContextAccessor = httpContextAccessor;
+      _feedbackMapper = feedbackMapper;
+      _responseCreator = responseCreator;
+      _logger = logger;
     }
 
-    DbFeedback dbFeedback = _feedbackMapper.Map(request);
+    /// <inheritdoc/>
+    public async Task<OperationResultResponse<Guid?>> ExecuteAsync(CreateFeedbackRequest request)
+    {
+      string remoteIp = _httpContextAccessor.HttpContext?.Connection?.RemoteIpAddress?.ToString() ?? "Unknown";
+      _logger.LogInformation($"Remote IP is {remoteIp}. User {request?.User?.FirstName}");
 
-    OperationResultResponse<Guid?> response = new();
-    response.Body = await _feedbackRepository.CreateAsync(dbFeedback);
+      ValidationResult validationResult = await _validator.ValidateAsync(request);
+      if (!validationResult.IsValid)
+      {
+        return _responseCreator.CreateFailureResponse<Guid?>(
+            HttpStatusCode.BadRequest,
+            validationResult.Errors.Select(vf => vf.ErrorMessage).ToList());
+      }
 
-    _httpContextAccessor.HttpContext.Response.StatusCode = (int)HttpStatusCode.Created;
+      DbFeedback dbFeedback = _feedbackMapper.Map(request);
+      dbFeedback.SenderIp = remoteIp; // Set the sender IP
 
-    return response.Body is null
-      ? _responseCreator.CreateFailureResponse<Guid?>(HttpStatusCode.BadRequest)
-      : response;
+      OperationResultResponse<Guid?> response = new();
+      response.Body = await _feedbackRepository.CreateAsync(dbFeedback);
+
+      _httpContextAccessor.HttpContext.Response.StatusCode = (int)HttpStatusCode.Created;
+
+      return response.Body is null
+          ? _responseCreator.CreateFailureResponse<Guid?>(HttpStatusCode.BadRequest)
+          : response;
+    }
   }
 }

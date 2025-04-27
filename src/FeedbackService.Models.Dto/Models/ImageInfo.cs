@@ -1,11 +1,11 @@
 ﻿using System;
 
-namespace UniversityHelper.FeedbackService.Models.Db
+namespace UniversityHelper.FeedbackService.Models.Dto.Models
 {
   /// <summary>
-  /// Represents an image associated with a feedback in the database.
+  /// Represents information about an image.
   /// </summary>
-  public class DbImage
+  public record ImageInfo
   {
     /// <summary>
     /// Gets or sets the image ID.
@@ -31,15 +31,5 @@ namespace UniversityHelper.FeedbackService.Models.Db
     /// Gets or sets the creation date of the image.
     /// </summary>
     public DateTime CreatedAtUtc { get; set; }
-
-    /// <summary>
-    /// Gets or sets the feedback associated with the image.
-    /// </summary>
-    public DbFeedback? Feedback { get; set; }
-
-    /// <summary>
-    /// Gets or sets the ID of the associated feedback.
-    /// </summary>
-    public Guid FeedbackId { get; set; }
   }
 }

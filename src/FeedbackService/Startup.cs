@@ -23,128 +23,127 @@ using System.Collections.Generic;
 using System.Text.Json.Serialization;
 using Microsoft.OpenApi.Models;
 
-namespace UniversityHelper.FeedbackService;
-
-public class Startup : BaseApiInfo
+namespace UniversityHelper.FeedbackService
 {
-  public const string CorsPolicyName = "LtDoCorsPolicy";
-
-  private readonly RabbitMqConfig _rabbitMqConfig;
-  private readonly BaseServiceInfoConfig _serviceInfoConfig;
-
-  private IConfiguration Configuration { get; }
-
-  public Startup(IConfiguration configuration)
+  /// <summary>
+  /// Configures the FeedbackService application services and middleware.
+  /// </summary>
+  public class Startup : BaseApiInfo
   {
-    Configuration = configuration;
+    public const string CorsPolicyName = "FeedbackServiceCorsPolicy";
 
-    _rabbitMqConfig = Configuration
-      .GetSection(BaseRabbitMqConfig.SectionName)
-      .Get<RabbitMqConfig>();
+    private readonly RabbitMqConfig _rabbitMqConfig;
+    private readonly BaseServiceInfoConfig _serviceInfoConfig;
+    private readonly IConfiguration Configuration;
 
-    _serviceInfoConfig = Configuration
-      .GetSection(BaseServiceInfoConfig.SectionName)
-      .Get<BaseServiceInfoConfig>();
-
-    Version = "2.0.2.0";
-    Description = "FeedbackService is an API that intended to work with feedback.";
-    StartTime = DateTime.UtcNow;
-    ApiName = $"UniversityHelper - {_serviceInfoConfig.Name}";
-  }
-
-  public void ConfigureServices(IServiceCollection services)
-  {
-    services.AddCors(options =>
+    public Startup(IConfiguration configuration)
     {
-      options.AddPolicy(
-        CorsPolicyName,
-        builder =>
+      Configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+
+      _rabbitMqConfig = Configuration
+          .GetSection(BaseRabbitMqConfig.SectionName)
+          .Get<RabbitMqConfig>() ?? throw new InvalidOperationException("RabbitMQ configuration is missing.");
+
+      _serviceInfoConfig = Configuration
+          .GetSection(BaseServiceInfoConfig.SectionName)
+          .Get<BaseServiceInfoConfig>() ?? throw new InvalidOperationException("Service info configuration is missing.");
+
+      Version = "2.0.2.0";
+      Description = "FeedbackService is an API that intended to work with feedback.";
+      StartTime = DateTime.UtcNow;
+      ApiName = $"UniversityHelper - {_serviceInfoConfig.Name}";
+    }
+
+    /// <summary>
+    /// Configures the services for the application.
+    /// </summary>
+    public void ConfigureServices(IServiceCollection services)
+    {
+      services.AddCors(options =>
+      {
+        options.AddPolicy(
+            CorsPolicyName,
+            builder =>
+            {
+              builder
+                          .WithOrigins(Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>() ?? new[] { "http://localhost:3000" })
+                          .AllowAnyHeader()
+                          .AllowAnyMethod();
+            });
+      });
+
+      services.Configure<TokenConfiguration>(Configuration.GetSection("CheckTokenMiddleware"));
+      services.Configure<BaseRabbitMqConfig>(Configuration.GetSection(BaseRabbitMqConfig.SectionName));
+      services.Configure<BaseServiceInfoConfig>(Configuration.GetSection(BaseServiceInfoConfig.SectionName));
+
+      services.AddHttpContextAccessor();
+      services
+          .AddControllers()
+          .AddJsonOptions(options =>
+          {
+            options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+          })
+          .AddNewtonsoftJson();
+
+      string connStr = ConnectionStringHandler.Get(Configuration) ?? throw new InvalidOperationException("Database connection string is missing.");
+      services.AddDbContext<FeedbackServiceDbContext>(options =>
+      {
+        options.UseSqlServer(connStr);
+      });
+
+      services.AddHealthChecks()
+          .AddSqlServer(connStr)
+          .AddRabbitMqCheck();
+
+      services.AddBusinessObjects();
+      services.ConfigureMassTransit(_rabbitMqConfig);
+
+      services.AddSwaggerGen(options =>
+      {
+        options.SwaggerDoc($"{Version}", new OpenApiInfo
         {
-          builder
-            .AllowAnyOrigin()
-            .AllowAnyHeader()
-            .AllowAnyMethod();
+          Version = Version,
+          Title = _serviceInfoConfig.Name,
+          Description = Description
         });
-    });
-
-    services.Configure<TokenConfiguration>(Configuration.GetSection("CheckTokenMiddleware"));
-    services.Configure<BaseRabbitMqConfig>(Configuration.GetSection(BaseRabbitMqConfig.SectionName));
-    services.Configure<BaseServiceInfoConfig>(Configuration.GetSection(BaseServiceInfoConfig.SectionName));
-
-    services.AddHttpContextAccessor();
-    services
-      .AddControllers()
-      .AddJsonOptions(options =>
-      {
-        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-      })
-      .AddNewtonsoftJson();
-
-    string connStr = ConnectionStringHandler.Get(Configuration);
-
-    services.AddDbContext<FeedbackServiceDbContext>(options =>
-    {
-      options.UseSqlServer(connStr);
-    });
-
-    services.AddHealthChecks()
-      .AddSqlServer(connStr)
-      .AddRabbitMqCheck();
-
-    services.AddBusinessObjects();
-
-    services.ConfigureMassTransit(_rabbitMqConfig);
-
-    services.AddSwaggerGen(options =>
-    {
-      options.SwaggerDoc($"{Version}", new OpenApiInfo
-      {
-        Version = Version,
-        Title = _serviceInfoConfig.Name,
-        Description = Description
+        options.EnableAnnotations();
       });
+    }
 
-      options.EnableAnnotations();
-    });
-  }
-
-  public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory)
-  {
-    app.UpdateDatabase<FeedbackServiceDbContext>();
-
-    app.UseForwardedHeaders();
-
-    app.UseExceptionsHandler(loggerFactory);
-
-    app.UseApiInformation();
-
-    app.UseRouting();
-
-    app.UseMiddleware<TokenMiddleware>();
-
-    app.UseCors(CorsPolicyName);
-
-    app.UseEndpoints(endpoints =>
+    /// <summary>
+    /// Configures the application middleware pipeline.
+    /// </summary>
+    public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory)
     {
-      endpoints.MapControllers().RequireCors(CorsPolicyName);
+      app.UpdateDatabase<FeedbackServiceDbContext>();
+      app.UseForwardedHeaders();
+      app.UseExceptionsHandler(loggerFactory);
+      app.UseApiInformation();
+      app.UseRouting();
+      app.UseMiddleware<TokenMiddleware>();
+      app.UseCors(CorsPolicyName);
 
-      endpoints.MapHealthChecks($"/{_serviceInfoConfig.Id}/hc", new HealthCheckOptions
+      app.UseEndpoints(endpoints =>
       {
-        ResultStatusCodes = new Dictionary<HealthStatus, int>
+        endpoints.MapControllers().RequireCors(CorsPolicyName);
+        endpoints.MapHealthChecks($"/{_serviceInfoConfig.Id}/hc", new HealthCheckOptions
         {
-          { HealthStatus.Unhealthy, 200 },
-          { HealthStatus.Healthy, 200 },
-          { HealthStatus.Degraded, 200 },
-        },
-        Predicate = check => check.Name != "masstransit-bus",
-        ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+          ResultStatusCodes = new Dictionary<HealthStatus, int>
+                    {
+                        { HealthStatus.Unhealthy, 200 },
+                        { HealthStatus.Healthy, 200 },
+                        { HealthStatus.Degraded, 200 },
+                    },
+          Predicate = check => check.Name != "masstransit-bus",
+          ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+        });
       });
-    });
 
-    app.UseSwagger()
-      .UseSwaggerUI(options =>
-      {
-        options.SwaggerEndpoint($"/swagger/{Version}/swagger.json", $"{Version}");
-      });
+      app.UseSwagger()
+          .UseSwaggerUI(options =>
+          {
+            options.SwaggerEndpoint($"/swagger/{Version}/swagger.json", $"{Version}");
+          });
+    }
   }
 }

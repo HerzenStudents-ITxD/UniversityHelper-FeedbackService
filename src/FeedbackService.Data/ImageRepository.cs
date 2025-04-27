@@ -1,31 +1,30 @@
 ﻿using UniversityHelper.FeedbackService.Data.Interfaces;
-using UniversityHelper.FeedbackService.Data.Provider;
-using UniversityHelper.FeedbackService.Models.Db;
+using UniversityHelper.FeedbackService.Mappers.Models.Interfaces;
+using UniversityHelper.FeedbackService.Models.Dto.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace UniversityHelper.FeedbackService.Data;
-
-public class ImageRepository : IImageRepository
+namespace UniversityHelper.FeedbackService.Data
 {
-  private readonly IDataProvider _provider;
-
-  public ImageRepository(IDataProvider provider)
+  /// <summary>
+  /// Repository for managing images.
+  /// </summary>
+  public class ImageRepository : IImageRepository
   {
-    _provider = provider;
-  }
+    private readonly IImageInfoMapper _imageInfoMapper;
 
-  public async Task<List<Guid>> CreateAsync(List<DbImage> dbImages)
-  {
-    if (dbImages is null || !dbImages.Any())
+    public ImageRepository(IImageInfoMapper imageInfoMapper)
     {
-      return null;
+      _imageInfoMapper = imageInfoMapper;
     }
 
-    await _provider.Images.AddRangeAsync(dbImages);
-
-    return dbImages.Select(i => i.Id).ToList();
+    /// <inheritdoc/>
+    public Task<List<ImageInfo>?> GetByFeedbackIdAsync(Guid feedbackId)
+    {
+      // Placeholder implementation; replace with actual data access
+      return Task.FromResult<List<ImageInfo>?>(null);
+    }
   }
 }

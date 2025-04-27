@@ -1,21 +1,34 @@
-﻿using UniversityHelper.FeedbackService.Models.Dto.Enums;
-using UniversityHelper.FeedbackService.Models.Dto.Models;
-using UniversityHelper.Models.Broker.Models;
+﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+using UniversityHelper.FeedbackService.Models.Dto.Enums;
+using UniversityHelper.FeedbackService.Models.Dto.Models;
 using UniversityHelper.Models.Broker.Models.User;
 
-namespace UniversityHelper.FeedbackService.Models.Dto.Requests;
-
-public record CreateFeedbackRequest
+namespace UniversityHelper.FeedbackService.Models.Dto.Requests
 {
-  public FeedbackType Type { get; set; }
+  /// <summary>
+  /// Request for creating a new feedback.
+  /// </summary>
+  public record CreateFeedbackRequest
+  {
+    /// <summary>
+    /// Gets or sets the type of feedback.
+    /// </summary>
+    public FeedbackType Type { get; set; }
 
-  [Required]
-  [MaxLength(1000)]
-  public string Content { get; set; }
+    /// <summary>
+    /// Gets or sets the feedback content.
+    /// </summary>
+    public required string Content { get; set; }
 
-  [Required]
-  public List<ImageContent> FeedbackImages { get; set; }
-  public UserData User { get; set; }
+    /// <summary>
+    /// Gets or sets the list of images for the feedback.
+    /// </summary>
+    public required List<ImageContent> FeedbackImages { get; set; }
+
+    /// <summary>
+    /// Gets or sets the user who submitted the feedback.
+    /// </summary>
+    public required UserInfo User { get; set; }
+  }
 }

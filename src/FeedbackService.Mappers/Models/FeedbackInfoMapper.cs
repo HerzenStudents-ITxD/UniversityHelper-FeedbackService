@@ -3,26 +3,31 @@ using UniversityHelper.FeedbackService.Models.Db;
 using UniversityHelper.FeedbackService.Models.Dto.Enums;
 using UniversityHelper.FeedbackService.Models.Dto.Models;
 
-namespace UniversityHelper.FeedbackService.Mappers.Models;
-
-public class FeedbackInfoMapper : IFeedbackInfoMapper
+namespace UniversityHelper.FeedbackService.Mappers.Models
 {
-  public FeedbackInfo Map(DbFeedback dbFeedback, int imagesCount)
+  /// <summary>
+  /// Maps database feedback entities to feedback information models.
+  /// </summary>
+  public class FeedbackInfoMapper : IFeedbackInfoMapper
   {
-    if (dbFeedback is null)
+    /// <inheritdoc/>
+    public FeedbackInfo? Map(DbFeedback? dbFeedback, int imagesCount)
     {
-      return null;
-    }
+      if (dbFeedback == null)
+      {
+        return null;
+      }
 
-    return new FeedbackInfo
-    {
-      Id = dbFeedback.Id,
-      Type = (FeedbackType)dbFeedback.Type,
-      Content = dbFeedback.Content,
-      Status = (FeedbackStatusType)dbFeedback.Status,
-      SenderFullName = dbFeedback.SenderFullName,
-      CreatedAtUtc = dbFeedback.CreatedAtUtc,
-      ImagesCount = imagesCount
-    };
+      return new FeedbackInfo
+      {
+        Id = dbFeedback.Id,
+        Content = dbFeedback.Content,
+        SenderFullName = dbFeedback.SenderFullName,
+        Type = (FeedbackType)dbFeedback.Type,
+        Status = (FeedbackStatusType)dbFeedback.Status,
+        CreatedAtUtc = dbFeedback.CreatedAtUtc,
+        ImagesCount = imagesCount
+      };
+    }
   }
 }

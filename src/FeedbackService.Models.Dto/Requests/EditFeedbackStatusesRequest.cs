@@ -1,15 +1,22 @@
-﻿using UniversityHelper.FeedbackService.Models.Dto.Enums;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+using UniversityHelper.FeedbackService.Models.Dto.Enums;
 
-namespace UniversityHelper.FeedbackService.Models.Dto.Requests;
-
-public record EditFeedbackStatusesRequest
+namespace UniversityHelper.FeedbackService.Models.Dto.Requests
 {
-  [Required]
-  public List<Guid> FeedbackIds;
+  /// <summary>
+  /// Request for editing the status of multiple feedbacks.
+  /// </summary>
+  public record EditFeedbackStatusesRequest
+  {
+    /// <summary>
+    /// Gets or sets the list of feedback IDs to update.
+    /// </summary>
+    public required List<Guid> FeedbackIds { get; set; }
 
-  [Required]
-  public FeedbackStatusType Status;
+    /// <summary>
+    /// Gets or sets the new status for the feedbacks.
+    /// </summary>
+    public FeedbackStatusType Status { get; set; }
+  }
 }

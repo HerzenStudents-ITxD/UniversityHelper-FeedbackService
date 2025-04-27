@@ -1,32 +1,41 @@
 ﻿using UniversityHelper.FeedbackService.Mappers.Models.Interfaces;
 using UniversityHelper.FeedbackService.Mappers.Responses.Interfaces;
-using UniversityHelper.FeedbackService.Models.Db;
 using UniversityHelper.FeedbackService.Models.Dto;
+using UniversityHelper.FeedbackService.Models.Dto.Models;
+using System.Collections.Generic;
 using System.Linq;
 
-namespace UniversityHelper.FeedbackService.Mappers.Responses;
-
-public class FeedbackResponseMapper : IFeedbackResponseMapper
+namespace UniversityHelper.FeedbackService.Mappers.Responses
 {
-  private readonly IFeedbackInfoMapper _mapper;
-  private readonly IImageMapper _imageMapper;
-
-  public FeedbackResponseMapper(
-    IFeedbackInfoMapper mapper,
-    IImageMapper imageMapper)
+  /// <summary>
+  /// Maps feedback information and images to a feedback response.
+  /// </summary>
+  public class FeedbackResponseMapper : IFeedbackResponseMapper
   {
-    _mapper = mapper;
-    _imageMapper = imageMapper;
-  }
+    private readonly IFeedbackInfoMapper _feedbackInfoMapper;
+    private readonly IImageInfoMapper _imageInfoMapper;
 
-  public FeedbackResponse Map(DbFeedback dbFeedback)
-  {
-    return dbFeedback is null
-      ? null
-      : new FeedbackResponse()
+    public FeedbackResponseMapper(
+        IFeedbackInfoMapper feedbackInfoMapper,
+        IImageInfoMapper imageInfoMapper)
+    {
+      _feedbackInfoMapper = feedbackInfoMapper;
+      _imageInfoMapper = imageInfoMapper;
+    }
+
+    /// <inheritdoc/>
+    public FeedbackResponse? Map(FeedbackInfo? feedbackInfo, IEnumerable<ImageInfo>? images)
+    {
+      if (feedbackInfo == null || images == null)
       {
-        Feedback = _mapper.Map(dbFeedback, dbFeedback.Images.Count),
-        Images = dbFeedback.Images.Select(_imageMapper.Map).ToList()
+        return null;
+      }
+
+      return new FeedbackResponse
+      {
+        Feedback = feedbackInfo,
+        Images = images.ToList()
       };
+    }
   }
 }

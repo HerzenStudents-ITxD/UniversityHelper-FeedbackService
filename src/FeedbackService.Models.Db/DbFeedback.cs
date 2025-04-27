@@ -1,39 +1,56 @@
-﻿using UniversityHelper.Core.BrokerSupport.Attributes.ParseEntity;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
-namespace UniversityHelper.FeedbackService.Models.Db;
-
-public class DbFeedback
+namespace UniversityHelper.FeedbackService.Models.Db
 {
-  public const string TableName = "Feedbacks";
-  public Guid Id { get; set; }
-  public int Type { get; set; }
-  public string Content { get; set; }
-  public int Status { get; set; }
-  public string SenderFullName { get; set; }
-  public Guid SenderId { get; set; }
-  public string SenderIp { get; set; }
-  public DateTime CreatedAtUtc { get; set; }
-  public Guid? ChangedBy { get; set; }
-  public DateTime? ChangedAtUtc { get; set; }
-
-  [IgnoreParse]
-  public ICollection<DbImage> Images { get; set; } = new HashSet<DbImage>();
-}
-
-public class DbFeedbackConfiguration : IEntityTypeConfiguration<DbFeedback>
-{
-  public void Configure(EntityTypeBuilder<DbFeedback> builder)
+  /// <summary>
+  /// Represents a feedback entity in the database.
+  /// </summary>
+  public class DbFeedback
   {
-    builder.ToTable(DbFeedback.TableName);
+    /// <summary>
+    /// Gets or sets the feedback ID.
+    /// </summary>
+    public Guid Id { get; set; }
 
-    builder.HasKey(f => f.Id);
+    /// <summary>
+    /// Gets or sets the feedback type.
+    /// </summary>
+    public int Type { get; set; }
 
-    builder
-      .HasMany(f => f.Images)
-      .WithOne(fi => fi.Feedback);
+    /// <summary>
+    /// Gets or sets the feedback content.
+    /// </summary>
+    public required string Content { get; set; }
+
+    /// <summary>
+    /// Gets or sets the status of the feedback.
+    /// </summary>
+    public int Status { get; set; }
+
+    /// <summary>
+    /// Gets or sets the full name of the sender.
+    /// </summary>
+    public required string SenderFullName { get; set; }
+
+    /// <summary>
+    /// Gets or sets the ID of the sender.
+    /// </summary>
+    public Guid SenderId { get; set; }
+
+    /// <summary>
+    /// Gets or sets the creation date of the feedback.
+    /// </summary>
+    public DateTime CreatedAtUtc { get; set; }
+
+    /// <summary>
+    /// Gets or sets the IP address of the sender.
+    /// </summary>
+    public required string SenderIp { get; set; }
+
+    /// <summary>
+    /// Gets or sets the list of images associated with the feedback.
+    /// </summary>
+    public List<DbImage> Images { get; set; } = new List<DbImage>();
   }
 }
