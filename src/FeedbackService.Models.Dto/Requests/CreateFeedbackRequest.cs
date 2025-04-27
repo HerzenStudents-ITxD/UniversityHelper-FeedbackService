@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UniversityHelper.FeedbackService.Models.Dto.Enums;
 using UniversityHelper.FeedbackService.Models.Dto.Models;
-using UniversityHelper.Models.Broker.Models.User;
 
 namespace UniversityHelper.FeedbackService.Models.Dto.Requests
 {

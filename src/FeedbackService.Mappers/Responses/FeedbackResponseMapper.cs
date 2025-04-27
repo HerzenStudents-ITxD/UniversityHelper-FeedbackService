@@ -1,9 +1,11 @@
 ﻿using UniversityHelper.FeedbackService.Mappers.Models.Interfaces;
 using UniversityHelper.FeedbackService.Mappers.Responses.Interfaces;
+using UniversityHelper.FeedbackService.Models.Db;
 using UniversityHelper.FeedbackService.Models.Dto;
 using UniversityHelper.FeedbackService.Models.Dto.Models;
 using System.Collections.Generic;
 using System.Linq;
+using UniversityHelper.FeedbackService.Mappers.Models;
 
 namespace UniversityHelper.FeedbackService.Mappers.Responses
 {
@@ -35,6 +37,27 @@ namespace UniversityHelper.FeedbackService.Mappers.Responses
       {
         Feedback = feedbackInfo,
         Images = images.ToList()
+      };
+    }
+
+    /// <inheritdoc/>
+    public FeedbackResponse? Map(DbFeedback? dbFeedback)
+    {
+      if (dbFeedback == null)
+      {
+        return null;
+      }
+
+      var feedbackInfo = _feedbackInfoMapper.Map(dbFeedback, dbFeedback.Images?.Count ?? 0);
+      var images = dbFeedback.Images?
+          .Select(img => _imageInfoMapper.Map(img))
+          .Where(img => img != null)
+          .ToList() ?? new List<ImageInfo>();
+
+      return new FeedbackResponse
+      {
+        Feedback = feedbackInfo!,
+        Images = images
       };
     }
   }

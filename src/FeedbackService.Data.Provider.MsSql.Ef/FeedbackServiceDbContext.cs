@@ -1,50 +1,45 @@
 ﻿using UniversityHelper.FeedbackService.Models.Db;
 using Microsoft.EntityFrameworkCore;
-using System.Reflection;
-using System.Threading.Tasks;
+using System.Collections.Generic;
+using System.Reflection.Emit;
 
-namespace UniversityHelper.FeedbackService.Data.Provider.MsSql.Ef;
-
-public class FeedbackServiceDbContext : DbContext, IDataProvider
+namespace UniversityHelper.FeedbackService.Data.Provider.MsSql.Ef
 {
-  public DbSet<DbFeedback> Feedbacks { get; set; }
-  public DbSet<DbImage> Images { get; set; }
-
-  public FeedbackServiceDbContext(DbContextOptions<FeedbackServiceDbContext> options)
-    : base(options)
+  /// <summary>
+  /// Database context for the FeedbackService using Entity Framework.
+  /// </summary>
+  public class FeedbackServiceDbContext : DbContext
   {
+    public FeedbackServiceDbContext(DbContextOptions<FeedbackServiceDbContext> options)
+        : base(options)
+    {
+    }
 
-  }
+    /// <summary>
+    /// Gets or sets the feedbacks table.
+    /// </summary>
+    public DbSet<DbFeedback> Feedbacks { get; set; }
 
-  protected override void OnModelCreating(ModelBuilder modelBuilder)
-  {
-    modelBuilder.ApplyConfigurationsFromAssembly(Assembly.Load("UniversityHelper.FeedbackService.Models.Db"));
-  }
+    /// <summary>
+    /// Gets or sets the images table.
+    /// </summary>
+    public DbSet<DbImage> Images { get; set; }
 
-  public void Save()
-  {
-    SaveChanges();
-  }
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+      modelBuilder.Entity<DbFeedback>()
+          .ToTable("Feedbacks")
+          .HasKey(f => f.Id);
 
-  public async Task SaveAsync()
-  {
-    await SaveChangesAsync();
-  }
+      modelBuilder.Entity<DbImage>()
+          .ToTable("Images")
+          .HasKey(i => i.Id);
 
-  public object MakeEntityDetached(object obj)
-  {
-    Entry(obj).State = EntityState.Detached;
-
-    return Entry(obj).State;
-  }
-
-  public void EnsureDeleted()
-  {
-    Database.EnsureDeleted();
-  }
-
-  public bool IsInMemory()
-  {
-    return Database.IsInMemory();
+      modelBuilder.Entity<DbImage>()
+          .HasOne(i => i.Feedback)
+          .WithMany(f => f.Images)
+          .HasForeignKey(i => i.FeedbackId)
+          .OnDelete(DeleteBehavior.Cascade);
+    }
   }
 }

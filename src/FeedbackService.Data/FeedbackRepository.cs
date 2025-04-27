@@ -2,6 +2,7 @@
 using UniversityHelper.FeedbackService.Data.Provider.MsSql.Ef;
 using UniversityHelper.FeedbackService.Models.Db;
 using UniversityHelper.FeedbackService.Models.Dto.Requests.Filter;
+using UniversityHelper.FeedbackService.Models.Dto.Enums;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -36,7 +37,7 @@ namespace UniversityHelper.FeedbackService.Data
     }
 
     /// <inheritdoc/>
-    public async Task<(List<(DbFeedback dbFeedback, int imagesCount)>?, int)> FindAsync(FindFeedbacksFilter filter)
+    public async Task<(List<(DbFeedback dbFeedback, int imagesCount)>? dbFeedbacks, int totalCount)> FindAsync(FindFeedbacksFilter filter)
     {
       if (filter == null)
       {
@@ -74,6 +75,14 @@ namespace UniversityHelper.FeedbackService.Data
     }
 
     /// <inheritdoc/>
+    public async Task<DbFeedback?> GetAsync(Guid feedbackId)
+    {
+      return await _context.Feedbacks
+          .Include(f => f.Images)
+          .FirstOrDefaultAsync(f => f.Id == feedbackId);
+    }
+
+    /// <inheritdoc/>
     public async Task<DbFeedback?> GetByIdAsync(Guid feedbackId)
     {
       return await _context.Feedbacks
@@ -82,7 +91,7 @@ namespace UniversityHelper.FeedbackService.Data
     }
 
     /// <inheritdoc/>
-    public async Task<bool> HaveSameStatusAsync(ICollection<Guid> feedbackIds, FeedbackStatusType status)
+    public async Task<bool> HaveSameStatusAsync(List<Guid> feedbackIds, FeedbackStatusType status)
     {
       if (feedbackIds == null || !feedbackIds.Any())
       {
@@ -95,7 +104,7 @@ namespace UniversityHelper.FeedbackService.Data
     }
 
     /// <inheritdoc/>
-    public async Task<bool> UpdateStatusAsync(ICollection<Guid> feedbackIds, FeedbackStatusType status)
+    public async Task<bool> EditStatusesAsync(List<Guid> feedbackIds, FeedbackStatusType status)
     {
       if (feedbackIds == null || !feedbackIds.Any())
       {

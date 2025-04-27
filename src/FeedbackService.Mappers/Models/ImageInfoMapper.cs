@@ -10,9 +10,9 @@ namespace UniversityHelper.FeedbackService.Mappers.Models
   public class ImageInfoMapper : IImageInfoMapper
   {
     /// <inheritdoc/>
-    public ImageInfo Map(DbImage dbImage)
+    public ImageInfo? Map(DbImage? dbImage)
     {
-      if (dbImage is null)
+      if (dbImage == null)
       {
         return null;
       }

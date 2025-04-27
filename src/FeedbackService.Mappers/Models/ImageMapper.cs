@@ -6,7 +6,7 @@ using System;
 namespace UniversityHelper.FeedbackService.Mappers.Models
 {
   /// <summary>
-  /// Maps image content to database image entities.
+  /// Maps image content to database image entities and vice versa.
   /// </summary>
   public class ImageMapper : IImageMapper
   {
@@ -26,6 +26,22 @@ namespace UniversityHelper.FeedbackService.Mappers.Models
         Extension = imageContent.Extension,
         CreatedAtUtc = DateTime.UtcNow,
         FeedbackId = feedbackId
+      };
+    }
+
+    /// <inheritdoc/>
+    public ImageContent? Map(DbImage? dbImage)
+    {
+      if (dbImage == null)
+      {
+        return null;
+      }
+
+      return new ImageContent
+      {
+        Name = dbImage.Name,
+        Content = dbImage.Content,
+        Extension = dbImage.Extension
       };
     }
   }

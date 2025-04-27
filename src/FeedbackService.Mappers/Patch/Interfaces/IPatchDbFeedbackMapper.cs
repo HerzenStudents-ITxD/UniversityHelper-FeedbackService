@@ -15,7 +15,7 @@ namespace UniversityHelper.FeedbackService.Mappers.Patch.Interfaces
     /// Maps a JSON patch document for feedback requests to a database entity patch.
     /// </summary>
     /// <param name="request">The JSON patch document for the feedback request.</param>
-    /// <returns>A JSON patch document for the database feedback entity.</returns>
-    JsonPatchDocument<DbFeedback> Map(JsonPatchDocument<EditFeedbackRequest> request);
+    /// <returns>A JSON patch document for the database feedback entity, or null if input is null.</returns>
+    JsonPatchDocument<DbFeedback>? Map(JsonPatchDocument<EditFeedbackRequest>? request);
   }
 }
