@@ -1,8 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-	<Import Project="$(ProjectDir)..\..\Common.Configurations.targets" />
+  <Import Project="$(ProjectDir)..\..\Common.Configurations.targets" />
 
-	<ItemGroup>
-	</ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FeedbackService.Data\FeedbackService.Data.csproj" />
+  </ItemGroup>
 
 </Project>
