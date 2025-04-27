@@ -1,8 +1,28 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.2.32630.192
+VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FeedbackService", "src\FeedbackService\FeedbackService.csproj", "{43080B95-3A42-4918-A027-3AEDB40B9B47}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FeedbackService.Broker", "src\FeedbackService.Broker\FeedbackService.Broker.csproj", "{8A412906-FB8E-49AB-B4CB-F436A473754C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FeedbackService.Business", "src\FeedbackService.Business\FeedbackService.Business.csproj", "{B5EC89A3-824A-441B-853F-0D63841A8962}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FeedbackService.Data", "src\FeedbackService.Data\FeedbackService.Data.csproj", "{D5114EEC-AC1A-4955-9C99-8A1F8F6F9FD8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FeedbackService.Data.Provider", "src\FeedbackService.Data.Provider\FeedbackService.Data.Provider.csproj", "{462AE11D-317A-45FC-B43A-F560C30E1B72}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FeedbackService.Data.Provider.MsSql.Ef", "src\FeedbackService.Data.Provider.MsSql.Ef\FeedbackService.Data.Provider.MsSql.Ef.csproj", "{5EEC2A73-4507-42E8-83C5-EFBA2570B882}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FeedbackService.Mappers", "src\FeedbackService.Mappers\FeedbackService.Mappers.csproj", "{9F5E1E24-5179-4584-A0E4-9194ADA14A33}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FeedbackService.Models.Db", "src\FeedbackService.Models.Db\FeedbackService.Models.Db.csproj", "{BF2A1A99-8949-4F5E-A53A-1A4D6B3F3D8D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FeedbackService.Models.Dto", "src\FeedbackService.Models.Dto\FeedbackService.Models.Dto.csproj", "{06635274-1BDA-4B88-A86D-C378BEED531E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FeedbackService.Validation", "src\FeedbackService.Validation\FeedbackService.Validation.csproj", "{632F3DFC-DCF5-4705-8937-DD83D97C099D}"
+EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{337592F7-0126-4A59-9862-292242A8F6F9}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution items", "Solution items", "{008FED83-31BA-4384-BA3A-8271114E56BE}"
@@ -13,27 +33,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution items", "Solution 
 		Common.Configurations.targets = Common.Configurations.targets
 		Dockerfile = Dockerfile
 		.github\workflows\main.yml = .github\workflows\main.yml
+		README.md = README.md
 	EndProjectSection
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FeedbackService", "src\FeedbackService\FeedbackService.csproj", "{43080B95-3A42-4918-A027-3AEDB40B9B47}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FeedbackService.Broker", "src\FeedbackService.Broker\FeedbackService.Broker.csproj", "{8A412906-FB8E-49AB-B4CB-F436A473754C}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FeedbackService.Business", "src\FeedbackService.Business\FeedbackService.Business.csproj", "{B5EC89A3-824A-441B-853F-0D63841A8962}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FeedbackService.Data", "src\FeedbackService.Data\FeedbackService.Data.csproj", "{D5114EEC-AC1A-4955-9C99-8A1F8F6F9FD8}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FeedbackService.Data.Provider", "src\FeedbackService.Data.Provider\FeedbackService.Data.Provider.csproj", "{462AE11D-317A-45FC-B43A-F560C30E1B72}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FeedbackService.Data.Provider.MsSql.Ef", "src\FeedbackService.Data.Provider.MsSql.Ef\FeedbackService.Data.Provider.MsSql.Ef.csproj", "{5EEC2A73-4507-42E8-83C5-EFBA2570B882}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FeedbackService.Mappers", "src\FeedbackService.Mappers\FeedbackService.Mappers.csproj", "{9F5E1E24-5179-4584-A0E4-9194ADA14A33}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FeedbackService.Models.Db", "src\FeedbackService.Models.Db\FeedbackService.Models.Db.csproj", "{BF2A1A99-8949-4F5E-A53A-1A4D6B3F3D8D}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FeedbackService.Models.Dto", "src\FeedbackService.Models.Dto\FeedbackService.Models.Dto.csproj", "{06635274-1BDA-4B88-A86D-C378BEED531E}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FeedbackService.Validation", "src\FeedbackService.Validation\FeedbackService.Validation.csproj", "{632F3DFC-DCF5-4705-8937-DD83D97C099D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
