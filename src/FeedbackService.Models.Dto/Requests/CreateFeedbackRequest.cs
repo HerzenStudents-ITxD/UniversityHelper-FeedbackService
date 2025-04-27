@@ -3,6 +3,7 @@ using UniversityHelper.FeedbackService.Models.Dto.Models;
 using UniversityHelper.Models.Broker.Models;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using UniversityHelper.Models.Broker.Models.User;
 
 namespace UniversityHelper.FeedbackService.Models.Dto.Requests;
 
