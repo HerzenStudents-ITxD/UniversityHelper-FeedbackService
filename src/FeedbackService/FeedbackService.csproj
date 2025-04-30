@@ -21,14 +21,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CommunityService.Broker\FeedbackService.Broker.csproj" />
-    <ProjectReference Include="..\CommunityService.Business\FeedbackService.Business.csproj" />
-    <ProjectReference Include="..\CommunityService.Data.Provider.MsSql.Ef\FeedbackService.Data.Provider.MsSql.Ef.csproj" />
-    <ProjectReference Include="..\CommunityService.Data\FeedbackService.Data.csproj" />
-    <ProjectReference Include="..\CommunityService.Mappers\FeedbackService.Mappers.csproj" />
-    <ProjectReference Include="..\CommunityService.Models.Db\FeedbackService.Models.Db.csproj" />
-    <ProjectReference Include="..\CommunityService.Models.Dto\FeedbackService.Models.Dto.csproj" />
-    <ProjectReference Include="..\CommunityService.Validation\FeedbackService.Validation.csproj" />
+    <ProjectReference Include="..\FeedbackService.Broker\FeedbackService.Broker.csproj" />
+    <ProjectReference Include="..\FeedbackService.Business\FeedbackService.Business.csproj" />
+    <ProjectReference Include="..\FeedbackService.Data.Provider.MsSql.Ef\FeedbackService.Data.Provider.MsSql.Ef.csproj" />
+    <ProjectReference Include="..\FeedbackService.Data\FeedbackService.Data.csproj" />
+    <ProjectReference Include="..\FeedbackService.Mappers\FeedbackService.Mappers.csproj" />
+    <ProjectReference Include="..\FeedbackService.Models.Db\FeedbackService.Models.Db.csproj" />
+    <ProjectReference Include="..\FeedbackService.Models.Dto\FeedbackService.Models.Dto.csproj" />
+    <ProjectReference Include="..\FeedbackService.Validation\FeedbackService.Validation.csproj" />
   </ItemGroup>
 
 </Project>

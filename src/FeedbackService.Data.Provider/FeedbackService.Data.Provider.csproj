@@ -3,7 +3,7 @@
   <Import Project="$(ProjectDir)..\..\Common.Configurations.targets" />
 
   <ItemGroup>
-    <ProjectReference Include="..\CommunityService.Data\FeedbackService.Data.csproj" />
+    <ProjectReference Include="..\FeedbackService.Models.Db\FeedbackService.Models.Db.csproj" />
   </ItemGroup>
 
 </Project>
