@@ -1,13 +1,14 @@
-﻿using UniversityHelper.FeedbackService.Models.Dto.Models;
-using UniversityHelper.FeedbackService.Models.Dto.Requests.Filter;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using UniversityHelper.Core.Attributes;
 using UniversityHelper.Core.Responses;
-using System.Threading.Tasks;
+using UniversityHelper.FeedbackService.Models.Dto.Requests;
+using UniversityHelper.FeedbackService.Models.Dto.Responses;
 
 namespace UniversityHelper.FeedbackService.Business.Commands.Feedback.Interfaces;
 
 [AutoInject]
 public interface IFindFeedbacksCommand
 {
-  Task<FindResultResponse<FeedbackInfo>> ExecuteAsync(FindFeedbacksFilter filter);
+    Task<FindResultResponse<FeedbackResponse>> ExecuteAsync(FindFeedbacksRequest request, CancellationToken cancellationToken);
 }

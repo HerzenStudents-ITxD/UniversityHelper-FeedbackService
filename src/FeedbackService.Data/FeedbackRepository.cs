@@ -34,44 +34,53 @@ public async Task<Guid?> CreateAsync(DbFeedback dbFeedback)
   return dbFeedback.Id;
 }
 
-public async Task<(List<(DbFeedback dbFeedback, int imagesCount)>? dbFeedbacks, int totalCount)> FindAsync(FindFeedbacksFilter filter)
-{
-  if (filter == null)
-  {
-    return (null, 0);
-  }
+    public async Task<(List<DbFeedback> feedbacks, int totalCount)> FindAsync(
+                Guid? userId,
+                FeedbackStatusType? status,
+                FeedbackType? type,
+                bool orderByDescending,
+                int page,
+                int pageSize,
+                CancellationToken cancellationToken)
+    {
+        var query = _provider.Feedbacks
+            .Include(f => f.Images)
+            .AsQueryable();
 
-  IQueryable<DbFeedback> query = _context.Feedbacks
-      .Include(f => f.Images);
+        if (userId.HasValue)
+        {
+            query = query.Where(f => f.CreatedBy == userId.Value);
+        }
 
-  if (filter.FeedbackType.HasValue)
-  {
-    query = query.Where(f => f.Type == (int)filter.FeedbackType.Value);
-  }
+        if (status.HasValue)
+        {
+            query = query.Where(f => f.Status == status.Value);
+        }
 
-  if (filter.FeedbackStatus.HasValue)
-  {
-    query = query.Where(f => f.Status == (int)filter.FeedbackStatus.Value);
-  }
+        if (type.HasValue)
+        {
+            query = query.Where(f => f.Type == type.Value);
+        }
 
-  int totalCount = await query.CountAsync();
+        if (orderByDescending)
+        {
+            query = query.OrderByDescending(f => f.CreatedAtUtc);
+        }
+        else
+        {
+            query = query.OrderBy(f => f.CreatedAtUtc);
+        }
 
-  var feedbacks = await query
-      .OrderByDescending(f => f.CreatedAtUtc)
-      .Skip(filter.SkipCount)
-      .Take(filter.TakeCount)
-      .Select(f => new
-      {
-        Feedback = f,
-        ImagesCount = f.Images.Count
-      })
-      .ToListAsync();
+        var totalCount = await query.CountAsync(cancellationToken);
+        var feedbacks = await query
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync(cancellationToken);
 
-  var result = feedbacks.Select(f => (f.Feedback, f.ImagesCount)).ToList();
-  return (result, totalCount);
-}
+        return (feedbacks, totalCount);
+    }
 
-public async Task<DbFeedback?> GetAsync(Guid feedbackId)
+    public async Task<DbFeedback?> GetAsync(Guid feedbackId)
 {
   return await _context.Feedbacks
       .Include(f => f.Images)

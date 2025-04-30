@@ -32,10 +32,11 @@ public async Task<OperationResultResponse<FeedbackResponse>> GetAsync(
 [ProducesResponseType(StatusCodes.Status400BadRequest)]
 [ProducesResponseType(StatusCodes.Status403Forbidden)]
 public async Task<FindResultResponse<FeedbackInfo>> FindAsync(
-    [FromQuery] FindFeedbacksFilter filter,
-    [FromServices] IFindFeedbacksCommand command)
-{
-  return await command.ExecuteAsync(filter);
+    [FromServices] IFindFeedbacksCommand command,
+    [FromQuery] FindFeedbacksRequest request,
+    [FromQuery] CancellationToken cancellationToken)
+    {
+  return await command.ExecuteAsync(filter, cancellationToken);
 }
 
 [HttpPost("create")]

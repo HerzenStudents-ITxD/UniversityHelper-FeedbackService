@@ -14,5 +14,11 @@ public class FindFeedbacksRequestValidator : AbstractValidator<FindFeedbacksRequ
         RuleFor(x => x.PageSize)
             .GreaterThan(0).WithMessage("Page size must be greater than 0.")
             .LessThanOrEqualTo(100).WithMessage("Page size cannot exceed 100.");
+
+        RuleFor(x => x.FeedbackStatus)
+            .IsInEnum().When(x => x.FeedbackStatus.HasValue).WithMessage("Invalid feedback status.");
+
+        RuleFor(x => x.FeedbackType)
+            .IsInEnum().When(x => x.FeedbackType.HasValue).WithMessage("Invalid feedback type.");
     }
 }
