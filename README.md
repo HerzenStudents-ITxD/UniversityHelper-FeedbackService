@@ -1,2 +1,2 @@
 # UniversityHelper-FeedbackService
-Сервис проекта UniversityHelper для работы с обратной связью от пользователей
+Сервис проекта UniversityHelper для работы с сообществами университета

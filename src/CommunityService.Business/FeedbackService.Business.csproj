@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="$(ProjectDir)..\..\Common.Configurations.targets" />
+
+  <ItemGroup>
+    <ProjectReference Include="..\CommunityService.Data\FeedbackService.Data.csproj" />
+    <ProjectReference Include="..\CommunityService.Mappers\FeedbackService.Mappers.csproj" />
+    <ProjectReference Include="..\CommunityService.Models.Db\FeedbackService.Models.Db.csproj" />
+    <ProjectReference Include="..\CommunityService.Models.Dto\FeedbackService.Models.Dto.csproj" />
+    <ProjectReference Include="..\CommunityService.Validation\FeedbackService.Validation.csproj" />
+  </ItemGroup>
+
+</Project>
