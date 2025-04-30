@@ -1,61 +1,78 @@
-﻿using UniversityHelper.Core.Responses;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using UniversityHelper.Core.Responses;
+using UniversityHelper.FeedbackService.Business.Commands.Feedback.Interfaces;
+using UniversityHelper.FeedbackService.Core.Interfaces;
 using UniversityHelper.FeedbackService.Data.Interfaces;
-using UniversityHelper.FeedbackService.Mappers.Models.Interfaces;
 using UniversityHelper.FeedbackService.Mappers.Responses.Interfaces;
 using UniversityHelper.FeedbackService.Models.Dto.Requests;
 using UniversityHelper.FeedbackService.Models.Dto.Responses;
-using Microsoft.AspNetCore.Http;
-using UniversityHelper.FeedbackService.Business.Commands.Feedback.Interfaces;
+using UniversityHelper.FeedbackService.Validation.Feedback.Interfaces;
 
-namespace UniversityHelper.FeedbackService.Business.Commands.Feedback;
-
-public class FindFeedbacksCommand : IFindFeedbacksCommand
+namespace UniversityHelper.FeedbackService.Business.Commands.Feedback
 {
-    private readonly IFeedbackRepository _feedbackRepository;
-    private readonly IFeedbackImageRepository _imageRepository;
-    private readonly IImageInfoMapper _imageInfoMapper;
-    private readonly IFeedbackResponseMapper _responseMapper;
-    private readonly IHttpContextAccessor _httpContextAccessor;
-    private readonly IResponseCreator _responseCreator;
-
-    public FindFeedbacksCommand(
-        IFeedbackRepository feedbackRepository,
-        IFeedbackImageRepository imageRepository,
-        IImageInfoMapper imageInfoMapper,
-        IFeedbackResponseMapper responseMapper,
-        IHttpContextAccessor httpContextAccessor,
-        IResponseCreator responseCreator)
+    public class FindFeedbacksCommand : IFindFeedbacksCommand
     {
-        _feedbackRepository = feedbackRepository;
-        _imageRepository = imageRepository;
-        _imageInfoMapper = imageInfoMapper;
-        _responseMapper = responseMapper;
-        _httpContextAccessor = httpContextAccessor;
-        _responseCreator = responseCreator;
-    }
+        private readonly IFeedbackRepository _feedbackRepository;
+        private readonly IImageRepository _imageRepository;
+        private readonly IFeedbackResponseMapper _responseMapper;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IResponseCreator _responseCreator;
+        private readonly IFindFeedbacksRequestValidator _validator;
 
-    public async Task<FindResultResponse<FeedbackResponse>> ExecuteAsync(FindFeedbacksRequest request, CancellationToken cancellationToken)
-    {
-        var userId = _httpContextAccessor.HttpContext?.User?.FindFirst("sub")?.Value;
-        Guid? userGuid = string.IsNullOrEmpty(userId) ? null : Guid.Parse(userId);
-
-        var (feedbacks, totalCount) = await _feedbackRepository.FindAsync(
-            userGuid,
-            request.FeedbackStatus,
-            request.FeedbackType,
-            request.OrderByDescending,
-            request.Page,
-            request.PageSize,
-            cancellationToken);
-
-        var responses = new List<FeedbackResponse>();
-        foreach (var feedback in feedbacks)
+        public FindFeedbacksCommand(
+            IFeedbackRepository feedbackRepository,
+            IImageRepository imageRepository,
+            IFeedbackResponseMapper responseMapper,
+            IHttpContextAccessor httpContextAccessor,
+            IResponseCreator responseCreator,
+            IFindFeedbacksRequestValidator validator)
         {
-            var images = await _imageRepository.GetImagesByFeedbackId(feedback.Id, cancellationToken);
-            var imageInfos = images.Select(i => _imageInfoMapper.Map(i)).Where(i => i != null).ToList();
-            responses.Add(_responseMapper.Map(feedback, imageInfos));
+            _feedbackRepository = feedbackRepository;
+            _imageRepository = imageRepository;
+            _responseMapper = responseMapper;
+            _httpContextAccessor = httpContextAccessor;
+            _responseCreator = responseCreator;
+            _validator = validator;
         }
 
-        return _responseCreator.CreateSuccessFindResponse(responses, totalCount);
+        public async Task<FindResultResponse<FeedbackResponse>> ExecuteAsync(FindFeedbacksRequest request, CancellationToken cancellationToken)
+        {
+            var validationResult = await _validator.ValidateAsync(request, cancellationToken);
+            if (!validationResult.IsValid)
+            {
+                return _responseCreator.CreateFailureFindResponse<FeedbackResponse>(
+                    System.Net.HttpStatusCode.BadRequest,
+                    validationResult.Errors.Select(e => e.ErrorMessage).ToList());
+            }
+
+            var userId = _httpContextAccessor.HttpContext?.User?.FindFirst("sub")?.Value;
+            Guid? userGuid = string.IsNullOrEmpty(userId) ? null : Guid.Parse(userId);
+
+            var (feedbacks, totalCount) = await _feedbackRepository.FindAsync(
+                userGuid,
+                request.FeedbackStatus,
+                request.FeedbackType,
+                request.OrderByDescending,
+                request.Page,
+                request.PageSize,
+                cancellationToken);
+
+            var responses = new List<FeedbackResponse>();
+            foreach (var feedback in feedbacks)
+            {
+                var response = _responseMapper.Map(feedback);
+                if (response != null)
+                {
+                    responses.Add(response);
+                }
+            }
+
+            return _responseCreator.CreateSuccessFindResponse(responses, totalCount);
+        }
     }
 }

@@ -5,10 +5,11 @@ using UniversityHelper.Core.Responses;
 using UniversityHelper.FeedbackService.Models.Dto.Requests;
 using UniversityHelper.FeedbackService.Models.Dto.Responses;
 
-namespace UniversityHelper.FeedbackService.Business.Commands.Feedback.Interfaces;
-
-[AutoInject]
-public interface IFindFeedbacksCommand
+namespace UniversityHelper.FeedbackService.Business.Commands.Feedback.Interfaces
 {
-    Task<FindResultResponse<FeedbackResponse>> ExecuteAsync(FindFeedbacksRequest request, CancellationToken cancellationToken);
+    [AutoInject]
+    public interface IFindFeedbacksCommand
+    {
+        Task<FindResultResponse<FeedbackResponse>> ExecuteAsync(FindFeedbacksRequest request, CancellationToken cancellationToken);
+    }
 }
