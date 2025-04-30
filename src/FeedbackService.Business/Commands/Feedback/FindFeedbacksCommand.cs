@@ -1,5 +1,4 @@
 ﻿using UniversityHelper.Core.Responses;
-using UniversityHelper.FeedbackService.Core.Interfaces;
 using UniversityHelper.FeedbackService.Data.Interfaces;
 using UniversityHelper.FeedbackService.Mappers.Models.Interfaces;
 using UniversityHelper.FeedbackService.Mappers.Responses.Interfaces;

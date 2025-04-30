@@ -1,6 +1,5 @@
 ﻿using UniversityHelper.Core.Attributes;
 using UniversityHelper.FeedbackService.Models.Db;
-using UniversityHelper.FeedbackService.Models.Dto.Requests.Filter;
 using UniversityHelper.FeedbackService.Models.Dto.Enums;
 using System;
 using System.Collections.Generic;

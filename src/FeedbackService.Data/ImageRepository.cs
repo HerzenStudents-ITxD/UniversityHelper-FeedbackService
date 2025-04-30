@@ -34,15 +34,12 @@ public async Task CreateAsync(List<DbImage> images)
   await _context.SaveChangesAsync();
 }
 
-public async Task<List<ImageInfo>?> GetByFeedbackIdAsync(Guid feedbackId)
+public async Task<List<DbImage>?> GetByFeedbackIdAsync(Guid feedbackId)
 {
-  var images = await _context.Images
+  return await _context.Images
       .Where(img => img.FeedbackId == feedbackId)
       .ToListAsync();
 
-  return images?
-      .Select(img => _imageInfoMapper.Map(img))
-      .Where(img => img != null)
-      .ToList();
+  
 }
 }

@@ -1,7 +1,6 @@
 ﻿using UniversityHelper.FeedbackService.Data.Interfaces;
 using UniversityHelper.FeedbackService.Data.Provider.MsSql.Ef;
 using UniversityHelper.FeedbackService.Models.Db;
-using UniversityHelper.FeedbackService.Models.Dto.Requests.Filter;
 using UniversityHelper.FeedbackService.Models.Dto.Enums;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -43,23 +42,23 @@ public async Task<Guid?> CreateAsync(DbFeedback dbFeedback)
                 int pageSize,
                 CancellationToken cancellationToken)
     {
-        var query = _provider.Feedbacks
+        var query = _context.Feedbacks
             .Include(f => f.Images)
             .AsQueryable();
 
         if (userId.HasValue)
         {
-            query = query.Where(f => f.CreatedBy == userId.Value);
+            query = query.Where(f => f.SenderId == userId.Value);
         }
 
         if (status.HasValue)
         {
-            query = query.Where(f => f.Status == status.Value);
+            query = query.Where(f => (FeedbackStatusType)f.Status == status.Value);
         }
 
         if (type.HasValue)
         {
-            query = query.Where(f => f.Type == type.Value);
+            query = query.Where(f => (FeedbackType)f.Type == type.Value);
         }
 
         if (orderByDescending)
