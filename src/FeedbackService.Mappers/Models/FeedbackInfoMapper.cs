@@ -5,12 +5,8 @@ using UniversityHelper.FeedbackService.Models.Dto.Models;
 
 namespace UniversityHelper.FeedbackService.Mappers.Models
 {
-  /// <summary>
-  /// Maps database feedback entities to feedback information models.
-  /// </summary>
   public class FeedbackInfoMapper : IFeedbackInfoMapper
   {
-    /// <inheritdoc/>
     public FeedbackInfo? Map(DbFeedback? dbFeedback, int imagesCount)
     {
       if (dbFeedback == null)

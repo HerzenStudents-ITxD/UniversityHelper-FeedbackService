@@ -11,9 +11,7 @@ using System.Threading.Tasks;
 
 namespace UniversityHelper.FeedbackService.Data
 {
-  /// <summary>
-  /// Repository for managing feedback entities.
-  /// </summary>
+
   public class FeedbackRepository : IFeedbackRepository
   {
     private readonly FeedbackServiceDbContext _context;
@@ -23,7 +21,7 @@ namespace UniversityHelper.FeedbackService.Data
       _context = context;
     }
 
-    /// <inheritdoc/>
+   
     public async Task<Guid?> CreateAsync(DbFeedback dbFeedback)
     {
       if (dbFeedback == null)
@@ -36,7 +34,6 @@ namespace UniversityHelper.FeedbackService.Data
       return dbFeedback.Id;
     }
 
-    /// <inheritdoc/>
     public async Task<(List<(DbFeedback dbFeedback, int imagesCount)>? dbFeedbacks, int totalCount)> FindAsync(FindFeedbacksFilter filter)
     {
       if (filter == null)
@@ -74,7 +71,6 @@ namespace UniversityHelper.FeedbackService.Data
       return (result, totalCount);
     }
 
-    /// <inheritdoc/>
     public async Task<DbFeedback?> GetAsync(Guid feedbackId)
     {
       return await _context.Feedbacks
@@ -82,7 +78,6 @@ namespace UniversityHelper.FeedbackService.Data
           .FirstOrDefaultAsync(f => f.Id == feedbackId);
     }
 
-    /// <inheritdoc/>
     public async Task<DbFeedback?> GetByIdAsync(Guid feedbackId)
     {
       return await _context.Feedbacks
@@ -90,7 +85,6 @@ namespace UniversityHelper.FeedbackService.Data
           .FirstOrDefaultAsync(f => f.Id == feedbackId);
     }
 
-    /// <inheritdoc/>
     public async Task<bool> HaveSameStatusAsync(List<Guid> feedbackIds, FeedbackStatusType status)
     {
       if (feedbackIds == null || !feedbackIds.Any())
@@ -103,7 +97,6 @@ namespace UniversityHelper.FeedbackService.Data
           .AnyAsync(f => f.Status == (int)status);
     }
 
-    /// <inheritdoc/>
     public async Task<bool> EditStatusesAsync(List<Guid> feedbackIds, FeedbackStatusType status)
     {
       if (feedbackIds == null || !feedbackIds.Any())

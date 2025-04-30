@@ -4,9 +4,6 @@ using UniversityHelper.FeedbackService.Validation.Feedback.Interfaces;
 
 namespace UniversityHelper.FeedbackService.Validation.Feedback
 {
-  /// <summary>
-  /// Validator for the CreateFeedbackRequest.
-  /// </summary>
   public class CreateFeedbackValidator : AbstractValidator<CreateFeedbackRequest>, ICreateFeedbackValidator
   {
     public CreateFeedbackValidator()

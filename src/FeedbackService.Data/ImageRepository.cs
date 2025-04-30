@@ -10,9 +10,7 @@ using UniversityHelper.FeedbackService.Data.Provider.MsSql.Ef;
 
 namespace UniversityHelper.FeedbackService.Data
 {
-  /// <summary>
-  /// Repository for managing images.
-  /// </summary>
+
   public class ImageRepository : IImageRepository
   {
     private readonly IImageInfoMapper _imageInfoMapper;
@@ -24,7 +22,6 @@ namespace UniversityHelper.FeedbackService.Data
       _context = context;
     }
 
-    /// <inheritdoc/>
     public async Task CreateAsync(List<DbImage> images)
     {
       if (images == null || !images.Any())
@@ -36,7 +33,6 @@ namespace UniversityHelper.FeedbackService.Data
       await _context.SaveChangesAsync();
     }
 
-    /// <inheritdoc/>
     public async Task<List<ImageInfo>?> GetByFeedbackIdAsync(Guid feedbackId)
     {
       var images = await _context.Images

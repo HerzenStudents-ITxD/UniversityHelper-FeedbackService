@@ -9,9 +9,6 @@ using UniversityHelper.FeedbackService.Models.Dto.Responses;
 
 namespace UniversityHelper.FeedbackService.Mappers.Responses
 {
-    /// <summary>
-    /// Maps feedback information and images to a feedback response.
-    /// </summary>
     public class FeedbackResponseMapper : IFeedbackResponseMapper
   {
     private readonly IFeedbackInfoMapper _feedbackInfoMapper;
@@ -25,7 +22,6 @@ namespace UniversityHelper.FeedbackService.Mappers.Responses
       _imageInfoMapper = imageInfoMapper;
     }
 
-    /// <inheritdoc/>
     public FeedbackResponse? Map(FeedbackInfo? feedbackInfo, IEnumerable<ImageInfo>? images)
     {
       if (feedbackInfo == null || images == null)
@@ -40,7 +36,6 @@ namespace UniversityHelper.FeedbackService.Mappers.Responses
       };
     }
 
-    /// <inheritdoc/>
     public FeedbackResponse? Map(DbFeedback? dbFeedback)
     {
       if (dbFeedback == null)

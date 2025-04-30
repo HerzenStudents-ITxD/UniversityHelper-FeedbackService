@@ -5,9 +5,6 @@ using UniversityHelper.FeedbackService.Validation.Feedback.Interfaces;
 
 namespace UniversityHelper.FeedbackService.Validation.Feedback
 {
-  /// <summary>
-  /// Validator for the EditFeedbackStatusesRequest.
-  /// </summary>
   public class EditFeedbackStatusValidator : AbstractValidator<EditFeedbackStatusesRequest>, IEditFeedbackStatusValidator
   {
     public EditFeedbackStatusValidator(IFeedbackRepository repository)

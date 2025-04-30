@@ -4,12 +4,8 @@ using UniversityHelper.FeedbackService.Models.Dto.Models;
 
 namespace UniversityHelper.FeedbackService.Mappers.Models
 {
-  /// <summary>
-  /// Maps database image entities to image information models.
-  /// </summary>
   public class ImageInfoMapper : IImageInfoMapper
   {
-    /// <inheritdoc/>
     public ImageInfo? Map(DbImage? dbImage)
     {
       if (dbImage == null)

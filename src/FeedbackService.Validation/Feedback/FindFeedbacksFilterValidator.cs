@@ -4,9 +4,6 @@ using UniversityHelper.FeedbackService.Validation.Feedback.Interfaces;
 
 namespace UniversityHelper.FeedbackService.Validation.Feedback
 {
-  /// <summary>
-  /// Validator for the FindFeedbacksFilter request.
-  /// </summary>
   public class FindFeedbacksFilterValidator : AbstractValidator<FindFeedbacksFilter>, IFindFeedbacksFilterValidator
   {
     public FindFeedbacksFilterValidator()

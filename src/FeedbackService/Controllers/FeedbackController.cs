@@ -15,12 +15,6 @@ namespace UniversityHelper.FeedbackService.Controllers
   [ApiController]
   public class FeedbackController : ControllerBase
   {
-    /// <summary>
-    /// Retrieves a specific feedback by its ID.
-    /// </summary>
-    /// <param name="feedbackId">The ID of the feedback to retrieve.</param>
-    /// <param name="command">The command to execute the retrieval.</param>
-    /// <returns>An operation result containing the feedback details.</returns>
     [HttpGet("get")]
     [ProducesResponseType(typeof(OperationResultResponse<FeedbackResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -33,12 +27,6 @@ namespace UniversityHelper.FeedbackService.Controllers
       return await command.ExecuteAsync(feedbackId);
     }
 
-    /// <summary>
-    /// Finds feedbacks based on the provided filter.
-    /// </summary>
-    /// <param name="filter">The filter criteria for finding feedbacks.</param>
-    /// <param name="command">The command to execute the search.</param>
-    /// <returns>A result containing a list of feedback information and total count.</returns>
     [HttpGet("find")]
     [ProducesResponseType(typeof(FindResultResponse<FeedbackInfo>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -50,12 +38,6 @@ namespace UniversityHelper.FeedbackService.Controllers
       return await command.ExecuteAsync(filter);
     }
 
-    /// <summary>
-    /// Creates a new feedback.
-    /// </summary>
-    /// <param name="request">The request containing feedback details.</param>
-    /// <param name="command">The command to execute the creation.</param>
-    /// <returns>An operation result containing the ID of the created feedback.</returns>
     [HttpPost("create")]
     [ProducesResponseType(typeof(OperationResultResponse<Guid?>), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -66,12 +48,6 @@ namespace UniversityHelper.FeedbackService.Controllers
       return await command.ExecuteAsync(request);
     }
 
-    /// <summary>
-    /// Updates the status of multiple feedbacks.
-    /// </summary>
-    /// <param name="request">The request containing feedback IDs and new status.</param>
-    /// <param name="command">The command to execute the status update.</param>
-    /// <returns>An operation result indicating success or failure.</returns>
     [HttpPut("editstatus")]
     [ProducesResponseType(typeof(OperationResultResponse<bool>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]

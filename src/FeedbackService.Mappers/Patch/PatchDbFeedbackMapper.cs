@@ -6,12 +6,8 @@ using Microsoft.AspNetCore.JsonPatch.Operations;
 
 namespace UniversityHelper.FeedbackService.Mappers.Patch
 {
-  /// <summary>
-  /// Maps a JSON patch document for feedback to database entities.
-  /// </summary>
   public class PatchDbFeedbackMapper : IPatchDbFeedbackMapper
   {
-    /// <inheritdoc/>
     public JsonPatchDocument<DbFeedback>? Map(JsonPatchDocument<EditFeedbackRequest>? request)
     {
       if (request == null)

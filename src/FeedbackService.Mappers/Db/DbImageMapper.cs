@@ -5,12 +5,8 @@ using System;
 
 namespace UniversityHelper.FeedbackService.Mappers.Db
 {
-  /// <summary>
-  /// Maps image content to database image entities.
-  /// </summary>
   public class DbImageMapper : IDbImageMapper
   {
-    /// <inheritdoc/>
     public DbImage? Map(ImageContent? imageContent, Guid feedbackId)
     {
       if (imageContent == null)

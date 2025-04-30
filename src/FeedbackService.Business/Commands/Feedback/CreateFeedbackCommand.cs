@@ -16,9 +16,7 @@ using System.Threading.Tasks;
 
 namespace UniversityHelper.FeedbackService.Business.Commands.Feedback
 {
-  /// <summary>
-  /// Command to create a new feedback.
-  /// </summary>
+
   public class CreateFeedbackCommand : ICreateFeedbackCommand
   {
     private readonly IFeedbackRepository _feedbackRepository;
@@ -44,7 +42,7 @@ namespace UniversityHelper.FeedbackService.Business.Commands.Feedback
       _logger = logger;
     }
 
-    /// <inheritdoc/>
+    
     public async Task<OperationResultResponse<Guid?>> ExecuteAsync(CreateFeedbackRequest request)
     {
       string remoteIp = _httpContextAccessor.HttpContext?.Connection?.RemoteIpAddress?.ToString() ?? "Unknown";

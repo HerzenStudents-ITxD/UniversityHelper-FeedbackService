@@ -5,9 +5,7 @@ using System.Reflection.Emit;
 
 namespace UniversityHelper.FeedbackService.Data.Provider.MsSql.Ef
 {
-  /// <summary>
-  /// Database context for the FeedbackService using Entity Framework.
-  /// </summary>
+
   public class FeedbackServiceDbContext : DbContext
   {
     public FeedbackServiceDbContext(DbContextOptions<FeedbackServiceDbContext> options)
@@ -15,14 +13,8 @@ namespace UniversityHelper.FeedbackService.Data.Provider.MsSql.Ef
     {
     }
 
-    /// <summary>
-    /// Gets or sets the feedbacks table.
-    /// </summary>
     public DbSet<DbFeedback> Feedbacks { get; set; }
 
-    /// <summary>
-    /// Gets or sets the images table.
-    /// </summary>
     public DbSet<DbImage> Images { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

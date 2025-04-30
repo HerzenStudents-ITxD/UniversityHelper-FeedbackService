@@ -3,10 +3,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace UniversityHelper.FeedbackService.Data.Provider.MsSql.Ef.Migrations
 {
-  /// <inheritdoc />
+
   public partial class InitialMigration : Migration
   {
-    /// <inheritdoc />
+
     protected override void Up(MigrationBuilder migrationBuilder)
     {
       migrationBuilder.CreateTable(
@@ -55,7 +55,6 @@ namespace UniversityHelper.FeedbackService.Data.Provider.MsSql.Ef.Migrations
           column: "FeedbackId");
     }
 
-    /// <inheritdoc />
     protected override void Down(MigrationBuilder migrationBuilder)
     {
       migrationBuilder.DropTable(
