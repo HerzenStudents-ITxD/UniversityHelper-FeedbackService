@@ -9,7 +9,7 @@ public Guid Id { get; set; }
 
 public required string Content { get; set; }
 
-public required string SenderFullName { get; set; }
+public required string SenderEmail { get; set; }
 
 public FeedbackType Type { get; set; }
 

@@ -6,7 +6,12 @@ namespace UniversityHelper.FeedbackService.Models.Dto.Enums;
 [JsonConverter(typeof(StringEnumConverter))]
 public enum FeedbackType
 {
-  Bug,
+  None,
   Wishes,
+  Home,
+  News,
+  Routes,
+  Timetable,
+  Settings,
   Other
 }

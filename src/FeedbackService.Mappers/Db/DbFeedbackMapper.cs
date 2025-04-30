@@ -20,9 +20,12 @@ public class DbFeedbackMapper : IDbFeedbackMapper
         return new DbFeedback
         {
             Id = Guid.NewGuid(),
-            Text = request.Text,
+            Content = request.Content,
+            SenderEmail= request.Email,
             Status = request.Status,
-            CreatedBy = Guid.Parse(userId),
+            Type = (int)request.Type, 
+            Images = new(),
+            SenderId = Guid.Parse(userId),
             CreatedAtUtc = DateTime.UtcNow
         };
     }

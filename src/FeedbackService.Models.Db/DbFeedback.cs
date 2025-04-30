@@ -9,9 +9,8 @@ public Guid Id { get; set; }
 public int Type { get; set; }
 public required string Content { get; set; }
 public int Status { get; set; }
-public required string SenderFullName { get; set; }
+public required string SenderEmail { get; set; }
 public Guid SenderId { get; set; }
 public DateTime CreatedAtUtc { get; set; }
-public required string SenderIp { get; set; }
 public List<DbImage> Images { get; set; } = new List<DbImage>();
 }
