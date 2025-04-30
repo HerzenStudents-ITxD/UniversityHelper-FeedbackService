@@ -18,7 +18,7 @@ public FeedbackInfo? Map(DbFeedback? dbFeedback, int imagesCount)
   {
     Id = dbFeedback.Id,
     Content = dbFeedback.Content,
-    SenderFullName = dbFeedback.SenderFullName,
+    SenderEmail = dbFeedback.SenderEmail,
     Type = (FeedbackType)dbFeedback.Type,
     Status = (FeedbackStatusType)dbFeedback.Status,
     CreatedAtUtc = dbFeedback.CreatedAtUtc,

@@ -17,11 +17,11 @@ public class FeedbackAgentRepository : IFeedbackAgentRepository
 
     public async Task<bool> IsModeratorAsync(Guid userId, Guid feedbackId)
     {
-        return await _provider.Feedbacks.AnyAsync(f => f.Id == feedbackId && f.CreatedBy == userId);
+        return await _provider.Feedbacks.AnyAsync(f => f.Id == feedbackId && f.SenderId == userId);
     }
 
     public async Task<bool> IsAgentAsync(Guid userId, Guid feedbackId)
     {
-        return await _provider.Feedbacks.AnyAsync(f => f.Id == feedbackId && f.CreatedBy == userId);
+        return await _provider.Feedbacks.AnyAsync(f => f.Id == feedbackId && f.SenderId == userId);
     }
 }

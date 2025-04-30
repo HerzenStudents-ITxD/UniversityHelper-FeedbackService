@@ -10,6 +10,8 @@ public record CreateFeedbackRequest
 public FeedbackType Type { get; set; }
 
 public required string Content { get; set; }
+public required int Status {  get; set; }
+public required string Email { get; set; }
 
 public required List<ImageContent> FeedbackImages { get; set; }
 
