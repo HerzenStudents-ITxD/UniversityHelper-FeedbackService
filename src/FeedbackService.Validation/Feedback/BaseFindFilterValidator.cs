@@ -3,34 +3,33 @@ using System.Linq;
 using FluentValidation;
 using UniversityHelper.FeedbackService.Validation.Feedback.Interfaces;
 
-namespace UniversityHelper.FeedbackService.Validation.Feedback
+namespace UniversityHelper.FeedbackService.Validation.Feedback;
+
+public class BaseFindFilterValidator : IBaseFindFilterValidator
 {
-    public class BaseFindFilterValidator : IBaseFindFilterValidator
+    private readonly IValidator<object> _validator;
+
+    public BaseFindFilterValidator(IValidator<object> validator)
     {
-        private readonly IValidator<object> _validator;
+        _validator = validator;
+    }
 
-        public BaseFindFilterValidator(IValidator<object> validator)
+    public bool ValidateCustom(object filter, out List<string> errors)
+    {
+        if (filter == null)
         {
-            _validator = validator;
+            errors = new List<string> { "Filter cannot be null." };
+            return false;
         }
 
-        public bool ValidateCustom(object filter, out List<string> errors)
+        var validationResult = _validator.Validate(filter);
+        if (!validationResult.IsValid)
         {
-            if (filter == null)
-            {
-                errors = new List<string> { "Filter cannot be null." };
-                return false;
-            }
-
-            var validationResult = _validator.Validate(filter);
-            if (!validationResult.IsValid)
-            {
-                errors = validationResult.Errors.Select(e => e.ErrorMessage).ToList();
-                return false;
-            }
-
-            errors = new List<string>();
-            return true;
+            errors = validationResult.Errors.Select(e => e.ErrorMessage).ToList();
+            return false;
         }
+
+        errors = new List<string>();
+        return true;
     }
 }

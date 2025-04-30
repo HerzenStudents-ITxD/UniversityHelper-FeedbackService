@@ -9,112 +9,111 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace UniversityHelper.FeedbackService.Data
+namespace UniversityHelper.FeedbackService.Data;
+
+
+public class FeedbackRepository : IFeedbackRepository
 {
+private readonly FeedbackServiceDbContext _context;
 
-  public class FeedbackRepository : IFeedbackRepository
+public FeedbackRepository(FeedbackServiceDbContext context)
+{
+  _context = context;
+}
+
+
+public async Task<Guid?> CreateAsync(DbFeedback dbFeedback)
+{
+  if (dbFeedback == null)
   {
-    private readonly FeedbackServiceDbContext _context;
-
-    public FeedbackRepository(FeedbackServiceDbContext context)
-    {
-      _context = context;
-    }
-
-   
-    public async Task<Guid?> CreateAsync(DbFeedback dbFeedback)
-    {
-      if (dbFeedback == null)
-      {
-        return null;
-      }
-
-      await _context.Feedbacks.AddAsync(dbFeedback);
-      await _context.SaveChangesAsync();
-      return dbFeedback.Id;
-    }
-
-    public async Task<(List<(DbFeedback dbFeedback, int imagesCount)>? dbFeedbacks, int totalCount)> FindAsync(FindFeedbacksFilter filter)
-    {
-      if (filter == null)
-      {
-        return (null, 0);
-      }
-
-      IQueryable<DbFeedback> query = _context.Feedbacks
-          .Include(f => f.Images);
-
-      if (filter.FeedbackType.HasValue)
-      {
-        query = query.Where(f => f.Type == (int)filter.FeedbackType.Value);
-      }
-
-      if (filter.FeedbackStatus.HasValue)
-      {
-        query = query.Where(f => f.Status == (int)filter.FeedbackStatus.Value);
-      }
-
-      int totalCount = await query.CountAsync();
-
-      var feedbacks = await query
-          .OrderByDescending(f => f.CreatedAtUtc)
-          .Skip(filter.SkipCount)
-          .Take(filter.TakeCount)
-          .Select(f => new
-          {
-            Feedback = f,
-            ImagesCount = f.Images.Count
-          })
-          .ToListAsync();
-
-      var result = feedbacks.Select(f => (f.Feedback, f.ImagesCount)).ToList();
-      return (result, totalCount);
-    }
-
-    public async Task<DbFeedback?> GetAsync(Guid feedbackId)
-    {
-      return await _context.Feedbacks
-          .Include(f => f.Images)
-          .FirstOrDefaultAsync(f => f.Id == feedbackId);
-    }
-
-    public async Task<DbFeedback?> GetByIdAsync(Guid feedbackId)
-    {
-      return await _context.Feedbacks
-          .Include(f => f.Images)
-          .FirstOrDefaultAsync(f => f.Id == feedbackId);
-    }
-
-    public async Task<bool> HaveSameStatusAsync(List<Guid> feedbackIds, FeedbackStatusType status)
-    {
-      if (feedbackIds == null || !feedbackIds.Any())
-      {
-        return false;
-      }
-
-      return await _context.Feedbacks
-          .Where(f => feedbackIds.Contains(f.Id))
-          .AnyAsync(f => f.Status == (int)status);
-    }
-
-    public async Task<bool> EditStatusesAsync(List<Guid> feedbackIds, FeedbackStatusType status)
-    {
-      if (feedbackIds == null || !feedbackIds.Any())
-      {
-        return false;
-      }
-
-      var feedbacks = await _context.Feedbacks
-          .Where(f => feedbackIds.Contains(f.Id))
-          .ToListAsync();
-
-      foreach (var feedback in feedbacks)
-      {
-        feedback.Status = (int)status;
-      }
-
-      await _context.SaveChangesAsync();
-      return true;
-    }
+    return null;
   }
+
+  await _context.Feedbacks.AddAsync(dbFeedback);
+  await _context.SaveChangesAsync();
+  return dbFeedback.Id;
+}
+
+public async Task<(List<(DbFeedback dbFeedback, int imagesCount)>? dbFeedbacks, int totalCount)> FindAsync(FindFeedbacksFilter filter)
+{
+  if (filter == null)
+  {
+    return (null, 0);
+  }
+
+  IQueryable<DbFeedback> query = _context.Feedbacks
+      .Include(f => f.Images);
+
+  if (filter.FeedbackType.HasValue)
+  {
+    query = query.Where(f => f.Type == (int)filter.FeedbackType.Value);
+  }
+
+  if (filter.FeedbackStatus.HasValue)
+  {
+    query = query.Where(f => f.Status == (int)filter.FeedbackStatus.Value);
+  }
+
+  int totalCount = await query.CountAsync();
+
+  var feedbacks = await query
+      .OrderByDescending(f => f.CreatedAtUtc)
+      .Skip(filter.SkipCount)
+      .Take(filter.TakeCount)
+      .Select(f => new
+      {
+        Feedback = f,
+        ImagesCount = f.Images.Count
+      })
+      .ToListAsync();
+
+  var result = feedbacks.Select(f => (f.Feedback, f.ImagesCount)).ToList();
+  return (result, totalCount);
+}
+
+public async Task<DbFeedback?> GetAsync(Guid feedbackId)
+{
+  return await _context.Feedbacks
+      .Include(f => f.Images)
+      .FirstOrDefaultAsync(f => f.Id == feedbackId);
+}
+
+public async Task<DbFeedback?> GetByIdAsync(Guid feedbackId)
+{
+  return await _context.Feedbacks
+      .Include(f => f.Images)
+      .FirstOrDefaultAsync(f => f.Id == feedbackId);
+}
+
+public async Task<bool> HaveSameStatusAsync(List<Guid> feedbackIds, FeedbackStatusType status)
+{
+  if (feedbackIds == null || !feedbackIds.Any())
+  {
+    return false;
+  }
+
+  return await _context.Feedbacks
+      .Where(f => feedbackIds.Contains(f.Id))
+      .AnyAsync(f => f.Status == (int)status);
+}
+
+public async Task<bool> EditStatusesAsync(List<Guid> feedbackIds, FeedbackStatusType status)
+{
+  if (feedbackIds == null || !feedbackIds.Any())
+  {
+    return false;
+  }
+
+  var feedbacks = await _context.Feedbacks
+      .Where(f => feedbackIds.Contains(f.Id))
+      .ToListAsync();
+
+  foreach (var feedback in feedbacks)
+  {
+    feedback.Status = (int)status;
+  }
+
+  await _context.SaveChangesAsync();
+  return true;
+}
 }

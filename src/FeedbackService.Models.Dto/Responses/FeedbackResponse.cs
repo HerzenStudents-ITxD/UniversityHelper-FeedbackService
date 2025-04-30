@@ -1,12 +1,11 @@
 ﻿using System.Collections.Generic;
 using UniversityHelper.FeedbackService.Models.Dto.Models;
 
-namespace UniversityHelper.FeedbackService.Models.Dto.Responses
-{
-    public record FeedbackResponse
-    {
-        public required FeedbackInfo Feedback { get; set; }
+namespace UniversityHelper.FeedbackService.Models.Dto.Responses;
 
-        public required List<ImageInfo> Images { get; set; }
-    }
+public record FeedbackResponse
+{
+    public required FeedbackInfo Feedback { get; set; }
+
+    public required List<ImageInfo> Images { get; set; }
 }

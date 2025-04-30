@@ -4,13 +4,12 @@ using UniversityHelper.FeedbackService.Models.Dto.Models;
 using System.Collections.Generic;
 using UniversityHelper.FeedbackService.Models.Dto.Responses;
 
-namespace UniversityHelper.FeedbackService.Mappers.Responses.Interfaces
-{
-    [AutoInject]
-  public interface IFeedbackResponseMapper
-  {
-    FeedbackResponse? Map(FeedbackInfo? feedbackInfo, IEnumerable<ImageInfo>? images);
+namespace UniversityHelper.FeedbackService.Mappers.Responses.Interfaces;
 
-    FeedbackResponse? Map(DbFeedback? dbFeedback);
-  }
+[AutoInject]
+public interface IFeedbackResponseMapper
+{
+FeedbackResponse? Map(FeedbackInfo? feedbackInfo, IEnumerable<ImageInfo>? images);
+
+FeedbackResponse? Map(DbFeedback? dbFeedback);
 }

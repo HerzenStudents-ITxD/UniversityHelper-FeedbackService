@@ -5,13 +5,12 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace UniversityHelper.FeedbackService.Data.Interfaces
-{
-  [AutoInject]
-  public interface IImageRepository
-  {
-    Task CreateAsync(List<DbImage> images);
+namespace UniversityHelper.FeedbackService.Data.Interfaces;
 
-    Task<List<ImageInfo>?> GetByFeedbackIdAsync(Guid feedbackId);
-  }
+[AutoInject]
+public interface IImageRepository
+{
+Task CreateAsync(List<DbImage> images);
+
+Task<List<ImageInfo>?> GetByFeedbackIdAsync(Guid feedbackId);
 }
