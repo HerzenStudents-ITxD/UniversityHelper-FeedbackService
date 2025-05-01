@@ -43,7 +43,7 @@ public class CreateFeedbackCommand : ICreateFeedbackCommand
 
     public async Task<OperationResultResponse<Guid?>> ExecuteAsync(CreateFeedbackRequest request)
     {
-        ValidationResult validationResult = await _validator.ValidateAsync(request);
+        var validationResult = await _validator.ValidateAsync(request);
         if (!validationResult.IsValid)
         {
             return _responseCreator.CreateFailureResponse<Guid?>(

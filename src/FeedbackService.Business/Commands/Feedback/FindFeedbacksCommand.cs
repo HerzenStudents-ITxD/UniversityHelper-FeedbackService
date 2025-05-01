@@ -17,7 +17,6 @@ namespace UniversityHelper.FeedbackService.Business.Commands.Feedback
 {
     public class FindFeedbacksCommand : IFindFeedbacksCommand
     {
-        private readonly I[AutoInject]
         private readonly IFeedbackRepository _feedbackRepository;
         private readonly IFeedbackResponseMapper _responseMapper;
         private readonly IHttpContextAccessor _httpContextAccessor;
@@ -40,6 +39,7 @@ namespace UniversityHelper.FeedbackService.Business.Commands.Feedback
 
         public async Task<FindResultResponse<FeedbackResponse>> ExecuteAsync(FindFeedbacksRequest request, CancellationToken cancellationToken)
         {
+            FindResultResponse<FeedbackResponse> response = new();
             var validationResult = await _validator.ValidateAsync(request, cancellationToken);
             if (!validationResult.IsValid)
             {
@@ -59,10 +59,12 @@ namespace UniversityHelper.FeedbackService.Business.Commands.Feedback
                 request.Page,
                 request.PageSize,
                 cancellationToken);
+                        
+            response.Body = new();
+            response.Body.AddRange(feedbacks.Select(_responseMapper.Map).Where(x => x != null).ToList());
 
-            var responses = feedbacks.Select(x => _responseMapper.Map(x)).Where(x => x != null).ToList();
-
-            return _responseCreator.CreateSuccessFindResponse(responses, totalCount);
+            response.TotalCount = totalCount;
+            return response;
         }
     }
 }

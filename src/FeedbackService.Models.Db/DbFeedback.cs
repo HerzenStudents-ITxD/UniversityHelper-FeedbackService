@@ -14,14 +14,14 @@ public class DbFeedback
     public List<DbImage> Images { get; set; }
     public List<DbFeedbackType> FeedbackTypes { get; set; }
 
-    public DbFeedback(string content, string senderEmail, Guid senderId)
-    {
-        Id = Guid.NewGuid();
-        Content = content;
-        SenderEmail = senderEmail;
-        SenderId = senderId;
-        CreatedAtUtc = DateTime.UtcNow;
-        Images = new List<DbImage>();
-        FeedbackTypes = new List<DbFeedbackType>();
-    }
+    //public DbFeedback(string content, string senderEmail, Guid senderId)
+    //{
+    //    Id = Guid.NewGuid();
+    //    Content = content;
+    //    SenderEmail = senderEmail;
+    //    SenderId = senderId;
+    //    CreatedAtUtc = DateTime.UtcNow;
+    //    Images = new List<DbImage>();
+    //    FeedbackTypes = new List<DbFeedbackType>();
+    //}
 }

@@ -12,13 +12,13 @@ public class DbImage
     public DbFeedback? Feedback { get; set; }
     public Guid FeedbackId { get; set; }
 
-    public DbImage(string name, string content, string extension, Guid feedbackId)
-    {
-        Id = Guid.NewGuid();
-        Name = name;
-        Content = content;
-        Extension = extension;
-        FeedbackId = feedbackId;
-        CreatedAtUtc = DateTime.UtcNow;
-    }
+    //public DbImage(string name, string content, string extension, Guid feedbackId)
+    //{
+    //    Id = Guid.NewGuid();
+    //    Name = name;
+    //    Content = content;
+    //    Extension = extension;
+    //    FeedbackId = feedbackId;
+    //    CreatedAtUtc = DateTime.UtcNow;
+    //}
 }
