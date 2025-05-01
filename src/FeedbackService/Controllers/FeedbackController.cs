@@ -1,7 +1,6 @@
 ﻿using UniversityHelper.FeedbackService.Business.Commands.Feedback.Interfaces;
 using UniversityHelper.FeedbackService.Models.Dto.Models;
 using UniversityHelper.FeedbackService.Models.Dto.Requests;
-using UniversityHelper.FeedbackService.Models.Dto.Requests.Filter;
 using UniversityHelper.Core.Responses;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -28,15 +27,15 @@ public async Task<OperationResultResponse<FeedbackResponse>> GetAsync(
 }
 
 [HttpGet("find")]
-[ProducesResponseType(typeof(FindResultResponse<FeedbackInfo>), StatusCodes.Status200OK)]
+[ProducesResponseType(typeof(FindResultResponse<FeedbackResponse>), StatusCodes.Status200OK)]
 [ProducesResponseType(StatusCodes.Status400BadRequest)]
 [ProducesResponseType(StatusCodes.Status403Forbidden)]
-public async Task<FindResultResponse<FeedbackInfo>> FindAsync(
+public async Task<FindResultResponse<FeedbackResponse>> FindAsync(
     [FromServices] IFindFeedbacksCommand command,
     [FromQuery] FindFeedbacksRequest request,
     [FromQuery] CancellationToken cancellationToken)
     {
-  return await command.ExecuteAsync(filter, cancellationToken);
+  return await command.ExecuteAsync(request, cancellationToken);
 }
 
 [HttpPost("create")]

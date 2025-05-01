@@ -45,8 +45,8 @@ public CreateFeedbackCommand(
 
 public async Task<OperationResultResponse<Guid?>> ExecuteAsync(CreateFeedbackRequest request)
 {
-  string remoteIp = _httpContextAccessor.HttpContext?.Connection?.RemoteIpAddress?.ToString() ?? "Unknown";
-  _logger.LogInformation($"Remote IP is {remoteIp}. User {request?.User?.FirstName}");
+  //string remoteIp = _httpContextAccessor.HttpContext?.Connection?.RemoteIpAddress?.ToString() ?? "Unknown";
+  //_logger.LogInformation($"Remote IP is {remoteIp}. User {request?.User?.FirstName}");
 
   ValidationResult validationResult = await _validator.ValidateAsync(request);
   if (!validationResult.IsValid)
@@ -57,7 +57,6 @@ public async Task<OperationResultResponse<Guid?>> ExecuteAsync(CreateFeedbackReq
   }
 
   DbFeedback dbFeedback = _feedbackMapper.Map(request);
-  dbFeedback.SenderIp = remoteIp; // Set the sender IP
 
   OperationResultResponse<Guid?> response = new();
   response.Body = await _feedbackRepository.CreateAsync(dbFeedback);

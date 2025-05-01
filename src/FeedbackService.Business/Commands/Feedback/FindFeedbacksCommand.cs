@@ -4,11 +4,12 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using UniversityHelper.Core.Helpers.Interfaces;
 using UniversityHelper.Core.Responses;
 using UniversityHelper.FeedbackService.Business.Commands.Feedback.Interfaces;
-using UniversityHelper.FeedbackService.Core.Interfaces;
 using UniversityHelper.FeedbackService.Data.Interfaces;
 using UniversityHelper.FeedbackService.Mappers.Responses.Interfaces;
+using UniversityHelper.FeedbackService.Models.Dto.Models;
 using UniversityHelper.FeedbackService.Models.Dto.Requests;
 using UniversityHelper.FeedbackService.Models.Dto.Responses;
 using UniversityHelper.FeedbackService.Validation.Feedback.Interfaces;
@@ -42,6 +43,7 @@ namespace UniversityHelper.FeedbackService.Business.Commands.Feedback
 
         public async Task<FindResultResponse<FeedbackResponse>> ExecuteAsync(FindFeedbacksRequest request, CancellationToken cancellationToken)
         {
+            FindResultResponse<FeedbackResponse> response = new();
             var validationResult = await _validator.ValidateAsync(request, cancellationToken);
             if (!validationResult.IsValid)
             {
@@ -62,17 +64,12 @@ namespace UniversityHelper.FeedbackService.Business.Commands.Feedback
                 request.PageSize,
                 cancellationToken);
 
-            var responses = new List<FeedbackResponse>();
-            foreach (var feedback in feedbacks)
-            {
-                var response = _responseMapper.Map(feedback);
-                if (response != null)
-                {
-                    responses.Add(response);
-                }
-            }
+            response.Body = new();
+            response.Body.AddRange(feedbacks.Select(x=>_responseMapper.Map(x)).ToList());
+            
+            response.TotalCount = totalCount;
+            return response;
 
-            return _responseCreator.CreateSuccessFindResponse(responses, totalCount);
         }
     }
 }

@@ -12,5 +12,5 @@ public interface IImageRepository
 {
 Task CreateAsync(List<DbImage> images);
 
-Task<List<ImageInfo>?> GetByFeedbackIdAsync(Guid feedbackId);
+Task<List<DbImage>> GetByFeedbackIdAsync(Guid feedbackId);
 }

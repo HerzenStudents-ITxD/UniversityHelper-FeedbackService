@@ -7,18 +7,19 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using UniversityHelper.FeedbackService.Data.Provider;
 
 namespace UniversityHelper.FeedbackService.Data;
 
 
 public class FeedbackRepository : IFeedbackRepository
 {
-private readonly FeedbackServiceDbContext _context;
+    private readonly IDataProvider _provider;
 
-public FeedbackRepository(FeedbackServiceDbContext context)
-{
-  _context = context;
-}
+    public FeedbackRepository(IDataProvider provider)
+    {
+      _provider = provider;
+    }
 
 
 public async Task<Guid?> CreateAsync(DbFeedback dbFeedback)
@@ -28,8 +29,8 @@ public async Task<Guid?> CreateAsync(DbFeedback dbFeedback)
     return null;
   }
 
-  await _context.Feedbacks.AddAsync(dbFeedback);
-  await _context.SaveChangesAsync();
+  await _provider.Feedbacks.AddAsync(dbFeedback);
+  await _provider.SaveAsync();
   return dbFeedback.Id;
 }
 
@@ -42,7 +43,7 @@ public async Task<Guid?> CreateAsync(DbFeedback dbFeedback)
                 int pageSize,
                 CancellationToken cancellationToken)
     {
-        var query = _context.Feedbacks
+        var query = _provider.Feedbacks
             .Include(f => f.Images)
             .AsQueryable();
 
@@ -81,14 +82,14 @@ public async Task<Guid?> CreateAsync(DbFeedback dbFeedback)
 
     public async Task<DbFeedback?> GetAsync(Guid feedbackId)
 {
-  return await _context.Feedbacks
+  return await _provider.Feedbacks
       .Include(f => f.Images)
       .FirstOrDefaultAsync(f => f.Id == feedbackId);
 }
 
 public async Task<DbFeedback?> GetByIdAsync(Guid feedbackId)
 {
-  return await _context.Feedbacks
+  return await _provider.Feedbacks
       .Include(f => f.Images)
       .FirstOrDefaultAsync(f => f.Id == feedbackId);
 }
@@ -100,7 +101,7 @@ public async Task<bool> HaveSameStatusAsync(List<Guid> feedbackIds, FeedbackStat
     return false;
   }
 
-  return await _context.Feedbacks
+  return await _provider.Feedbacks
       .Where(f => feedbackIds.Contains(f.Id))
       .AnyAsync(f => f.Status == (int)status);
 }
@@ -112,7 +113,7 @@ public async Task<bool> EditStatusesAsync(List<Guid> feedbackIds, FeedbackStatus
     return false;
   }
 
-  var feedbacks = await _context.Feedbacks
+  var feedbacks = await _provider.Feedbacks
       .Where(f => feedbackIds.Contains(f.Id))
       .ToListAsync();
 
@@ -121,7 +122,7 @@ public async Task<bool> EditStatusesAsync(List<Guid> feedbackIds, FeedbackStatus
     feedback.Status = (int)status;
   }
 
-  await _context.SaveChangesAsync();
+  await _provider.SaveAsync();
   return true;
 }
 }
