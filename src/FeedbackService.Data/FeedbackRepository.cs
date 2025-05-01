@@ -1,5 +1,5 @@
 ﻿using UniversityHelper.FeedbackService.Data.Interfaces;
-using UniversityHelper.FeedbackService.Data.Provider.MsSql.Ef;
+using UniversityHelper.FeedbackService.Data.Provider;
 using UniversityHelper.FeedbackService.Models.Db;
 using UniversityHelper.FeedbackService.Models.Dto.Enums;
 using Microsoft.EntityFrameworkCore;
@@ -7,10 +7,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using UniversityHelper.FeedbackService.Data.Provider;
 
 namespace UniversityHelper.FeedbackService.Data;
-
 
 public class FeedbackRepository : IFeedbackRepository
 {
@@ -18,33 +16,34 @@ public class FeedbackRepository : IFeedbackRepository
 
     public FeedbackRepository(IDataProvider provider)
     {
-      _provider = provider;
+        _provider = provider;
     }
 
+    public async Task<Guid?> CreateAsync(DbFeedback dbFeedback)
+    {
+        if (dbFeedback == null)
+        {
+            return null;
+        }
 
-public async Task<Guid?> CreateAsync(DbFeedback dbFeedback)
-{
-  if (dbFeedback == null)
-  {
-    return null;
-  }
-
-  await _provider.Feedbacks.AddAsync(dbFeedback);
-  await _provider.SaveAsync();
-  return dbFeedback.Id;
-}
+        await _provider.Feedbacks.AddAsync(dbFeedback);
+        await _provider.SaveAsync();
+        return dbFeedback.Id;
+    }
 
     public async Task<(List<DbFeedback> feedbacks, int totalCount)> FindAsync(
-                Guid? userId,
-                FeedbackStatusType? status,
-                FeedbackType? type,
-                bool orderByDescending,
-                int page,
-                int pageSize,
-                CancellationToken cancellationToken)
+        Guid? userId,
+        FeedbackStatusType? status,
+        List<Guid>? typeIds,
+        bool orderByDescending,
+        int page,
+        int pageSize,
+        CancellationToken cancellationToken)
     {
         var query = _provider.Feedbacks
             .Include(f => f.Images)
+            .Include(f => f.FeedbackTypes)
+            .ThenInclude(ft => ft.Type)
             .AsQueryable();
 
         if (userId.HasValue)
@@ -57,9 +56,9 @@ public async Task<Guid?> CreateAsync(DbFeedback dbFeedback)
             query = query.Where(f => (FeedbackStatusType)f.Status == status.Value);
         }
 
-        if (type.HasValue)
+        if (typeIds != null && typeIds.Any())
         {
-            query = query.Where(f => (FeedbackType)f.Type == type.Value);
+            query = query.Where(f => f.FeedbackTypes.Any(ft => typeIds.Contains(ft.TypeId)));
         }
 
         if (orderByDescending)
@@ -81,48 +80,52 @@ public async Task<Guid?> CreateAsync(DbFeedback dbFeedback)
     }
 
     public async Task<DbFeedback?> GetAsync(Guid feedbackId)
-{
-  return await _provider.Feedbacks
-      .Include(f => f.Images)
-      .FirstOrDefaultAsync(f => f.Id == feedbackId);
-}
+    {
+        return await _provider.Feedbacks
+            .Include(f => f.Images)
+            .Include(f => f.FeedbackTypes)
+            .ThenInclude(ft => ft.Type)
+            .FirstOrDefaultAsync(f => f.Id == feedbackId);
+    }
 
-public async Task<DbFeedback?> GetByIdAsync(Guid feedbackId)
-{
-  return await _provider.Feedbacks
-      .Include(f => f.Images)
-      .FirstOrDefaultAsync(f => f.Id == feedbackId);
-}
+    public async Task<DbFeedback?> GetByIdAsync(Guid feedbackId)
+    {
+        return await _provider.Feedbacks
+            .Include(f => f.Images)
+            .Include(f => f.FeedbackTypes)
+            .ThenInclude(ft => ft.Type)
+            .FirstOrDefaultAsync(f => f.Id == feedbackId);
+    }
 
-public async Task<bool> HaveSameStatusAsync(List<Guid> feedbackIds, FeedbackStatusType status)
-{
-  if (feedbackIds == null || !feedbackIds.Any())
-  {
-    return false;
-  }
+    public async Task<bool> HaveSameStatusAsync(List<Guid> feedbackIds, FeedbackStatusType status)
+    {
+        if (feedbackIds == null || !feedbackIds.Any())
+        {
+            return false;
+        }
 
-  return await _provider.Feedbacks
-      .Where(f => feedbackIds.Contains(f.Id))
-      .AnyAsync(f => f.Status == (int)status);
-}
+        return await _provider.Feedbacks
+            .Where(f => feedbackIds.Contains(f.Id))
+            .AnyAsync(f => f.Status == (int)status);
+    }
 
-public async Task<bool> EditStatusesAsync(List<Guid> feedbackIds, FeedbackStatusType status)
-{
-  if (feedbackIds == null || !feedbackIds.Any())
-  {
-    return false;
-  }
+    public async Task<bool> EditStatusesAsync(List<Guid> feedbackIds, FeedbackStatusType status)
+    {
+        if (feedbackIds == null || !feedbackIds.Any())
+        {
+            return false;
+        }
 
-  var feedbacks = await _provider.Feedbacks
-      .Where(f => feedbackIds.Contains(f.Id))
-      .ToListAsync();
+        var feedbacks = await _provider.Feedbacks
+            .Where(f => feedbackIds.Contains(f.Id))
+            .ToListAsync();
 
-  foreach (var feedback in feedbacks)
-  {
-    feedback.Status = (int)status;
-  }
+        foreach (var feedback in feedbacks)
+        {
+            feedback.Status = (int)status;
+        }
 
-  await _provider.SaveAsync();
-  return true;
-}
+        await _provider.SaveAsync();
+        return true;
+    }
 }

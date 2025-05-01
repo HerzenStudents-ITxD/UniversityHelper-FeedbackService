@@ -6,20 +6,27 @@ namespace UniversityHelper.FeedbackService.Validation.Feedback;
 
 public class CreateFeedbackValidator : AbstractValidator<CreateFeedbackRequest>, ICreateFeedbackValidator
 {
-public CreateFeedbackValidator()
-{
-  RuleFor(f => f.Type)
-      .IsInEnum()
-      .WithMessage("Invalid feedback type.");
+    public CreateFeedbackValidator()
+    {
+        RuleFor(f => f.TypeIds)
+            .NotNull()
+            .Must(ids => ids != null && ids.Any())
+            .WithMessage("At least one feedback type ID is required.");
 
-  RuleFor(f => f.Content)
-      .NotEmpty()
-      .WithMessage("Feedback content is required.")
-      .MaximumLength(1000)
-      .WithMessage("Feedback content is too long.");
+        RuleFor(f => f.Content)
+            .NotEmpty()
+            .WithMessage("Feedback content is required.")
+            .MaximumLength(1000)
+            .WithMessage("Feedback content is too long.");
 
-  RuleFor(f => f.FeedbackImages)
-      .NotNull()
-      .WithMessage("Feedback images are required.");
-}
+        RuleFor(f => f.Email)
+            .NotEmpty()
+            .WithMessage("Email is required.")
+            .EmailAddress()
+            .WithMessage("Invalid email format.");
+
+        RuleFor(f => f.User)
+            .NotNull()
+            .WithMessage("User information is required.");
+    }
 }

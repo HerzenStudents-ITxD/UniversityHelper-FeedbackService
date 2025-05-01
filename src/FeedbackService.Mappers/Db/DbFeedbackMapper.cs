@@ -17,16 +17,27 @@ public class DbFeedbackMapper : IDbFeedbackMapper
     public DbFeedback Map(CreateFeedbackRequest request)
     {
         var userId = _httpContextAccessor.HttpContext?.User?.FindFirst("sub")?.Value ?? Guid.Empty.ToString();
-        return new DbFeedback
+        var feedback = new DbFeedback
         {
             Id = Guid.NewGuid(),
             Content = request.Content,
-            SenderEmail= request.Email,
+            SenderEmail = request.Email,
             Status = request.Status,
-            Type = (int)request.Type, 
             Images = new(),
             SenderId = Guid.Parse(userId),
-            CreatedAtUtc = DateTime.UtcNow
+            CreatedAtUtc = DateTime.UtcNow,
+            FeedbackTypes = request.TypeIds.Select(typeId => new DbFeedbackType
+            {
+                Id = Guid.NewGuid(),
+                TypeId = typeId
+            }).ToList()
         };
+
+        foreach (var feedbackType in feedback.FeedbackTypes)
+        {
+            feedbackType.FeedbackId = feedback.Id;
+        }
+
+        return feedback;
     }
 }

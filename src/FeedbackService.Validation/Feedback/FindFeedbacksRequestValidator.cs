@@ -18,7 +18,9 @@ public class FindFeedbacksRequestValidator : AbstractValidator<FindFeedbacksRequ
         RuleFor(x => x.FeedbackStatus)
             .IsInEnum().When(x => x.FeedbackStatus.HasValue).WithMessage("Invalid feedback status.");
 
-        RuleFor(x => x.FeedbackType)
-            .IsInEnum().When(x => x.FeedbackType.HasValue).WithMessage("Invalid feedback type.");
+        RuleFor(x => x.FeedbackTypeIds)
+            .Must(ids => ids == null || ids.All(id => id != Guid.Empty))
+            .When(x => x.FeedbackTypeIds != null)
+            .WithMessage("Invalid feedback type IDs.");
     }
 }

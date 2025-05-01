@@ -3,6 +3,7 @@ using UniversityHelper.Core.Attributes;
 using UniversityHelper.Core.EFSupport.Provider;
 using UniversityHelper.Core.Enums;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 
 namespace UniversityHelper.FeedbackService.Data.Provider;
 
@@ -11,4 +12,7 @@ public interface IDataProvider : IBaseDataProvider
 {
   DbSet<DbFeedback> Feedbacks { get; set; }
   DbSet<DbImage> Images { get; set; }
+
+  DbSet<DbType> Types { get; set; }
+  DbSet<DbFeedbackType> FeedbackTypes { get; set; }
 }

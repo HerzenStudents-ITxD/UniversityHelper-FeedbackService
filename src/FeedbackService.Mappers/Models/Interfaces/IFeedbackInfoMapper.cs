@@ -7,5 +7,5 @@ namespace UniversityHelper.FeedbackService.Mappers.Models.Interfaces;
 [AutoInject]
 public interface IFeedbackInfoMapper
 {
-FeedbackInfo? Map(DbFeedback? dbFeedback, int imagesCount);
+    FeedbackInfo? Map(DbFeedback? dbFeedback, int imagesCount);
 }

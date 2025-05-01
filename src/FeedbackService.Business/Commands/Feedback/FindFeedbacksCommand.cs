@@ -4,12 +4,11 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
-using UniversityHelper.Core.Helpers.Interfaces;
 using UniversityHelper.Core.Responses;
+using UniversityHelper.Core.Helpers.Interfaces;
 using UniversityHelper.FeedbackService.Business.Commands.Feedback.Interfaces;
 using UniversityHelper.FeedbackService.Data.Interfaces;
 using UniversityHelper.FeedbackService.Mappers.Responses.Interfaces;
-using UniversityHelper.FeedbackService.Models.Dto.Models;
 using UniversityHelper.FeedbackService.Models.Dto.Requests;
 using UniversityHelper.FeedbackService.Models.Dto.Responses;
 using UniversityHelper.FeedbackService.Validation.Feedback.Interfaces;
@@ -18,8 +17,8 @@ namespace UniversityHelper.FeedbackService.Business.Commands.Feedback
 {
     public class FindFeedbacksCommand : IFindFeedbacksCommand
     {
+        private readonly I[AutoInject]
         private readonly IFeedbackRepository _feedbackRepository;
-        private readonly IImageRepository _imageRepository;
         private readonly IFeedbackResponseMapper _responseMapper;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IResponseCreator _responseCreator;
@@ -27,14 +26,12 @@ namespace UniversityHelper.FeedbackService.Business.Commands.Feedback
 
         public FindFeedbacksCommand(
             IFeedbackRepository feedbackRepository,
-            IImageRepository imageRepository,
             IFeedbackResponseMapper responseMapper,
             IHttpContextAccessor httpContextAccessor,
             IResponseCreator responseCreator,
             IFindFeedbacksRequestValidator validator)
         {
             _feedbackRepository = feedbackRepository;
-            _imageRepository = imageRepository;
             _responseMapper = responseMapper;
             _httpContextAccessor = httpContextAccessor;
             _responseCreator = responseCreator;
@@ -43,7 +40,6 @@ namespace UniversityHelper.FeedbackService.Business.Commands.Feedback
 
         public async Task<FindResultResponse<FeedbackResponse>> ExecuteAsync(FindFeedbacksRequest request, CancellationToken cancellationToken)
         {
-            FindResultResponse<FeedbackResponse> response = new();
             var validationResult = await _validator.ValidateAsync(request, cancellationToken);
             if (!validationResult.IsValid)
             {
@@ -58,18 +54,15 @@ namespace UniversityHelper.FeedbackService.Business.Commands.Feedback
             var (feedbacks, totalCount) = await _feedbackRepository.FindAsync(
                 userGuid,
                 request.FeedbackStatus,
-                request.FeedbackType,
+                request.FeedbackTypeIds,
                 request.OrderByDescending,
                 request.Page,
                 request.PageSize,
                 cancellationToken);
 
-            response.Body = new();
-            response.Body.AddRange(feedbacks.Select(x=>_responseMapper.Map(x)).ToList());
-            
-            response.TotalCount = totalCount;
-            return response;
+            var responses = feedbacks.Select(x => _responseMapper.Map(x)).Where(x => x != null).ToList();
 
+            return _responseCreator.CreateSuccessFindResponse(responses, totalCount);
         }
     }
 }
