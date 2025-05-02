@@ -51,7 +51,6 @@ public class Startup : BaseApiInfo
       .GetSection(BaseRabbitMqConfig.SectionName)
       .Get<RabbitMqConfig>();
 
-    //App.Release.BreakChange.Version
     Version = "2.0.2.0";
     Description = "FeedbackService is an API intended to work with the communities.";
     StartTime = DateTime.UtcNow;
@@ -135,40 +134,16 @@ public class Startup : BaseApiInfo
       .AddRabbitMqCheck();
 
     services.AddSwaggerGen(options =>
-     {
+      {
         options.SwaggerDoc($"{Version}", new OpenApiInfo
         {
             Version = Version,
             Title = _serviceInfoConfig.Name,
             Description = Description
         });
-         options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-         {
-             Description = "JWT Authorization header using the Bearer scheme.",
-             Name = "Authorization",
-             In = ParameterLocation.Header,
-             Type = SecuritySchemeType.Http,
-             Scheme = "bearer",
-             BearerFormat = "JWT"
-         });
 
-         options.AddSecurityRequirement(new OpenApiSecurityRequirement
-            {
-                {
-                    new OpenApiSecurityScheme
-                    {
-                        Reference = new OpenApiReference
-                        {
-                            Type = ReferenceType.SecurityScheme,
-                            Id = "Bearer"
-                        }
-                    },
-                    new string[] {}
-                }
-            });
-
-         options.EnableAnnotations();
-     });
+        options.EnableAnnotations();
+      });
     }
 
     public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory)
@@ -205,6 +180,7 @@ public class Startup : BaseApiInfo
         ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
       });
     });
+
         app.UseSwagger()
           .UseSwaggerUI(options =>
           {
