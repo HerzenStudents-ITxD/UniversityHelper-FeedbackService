@@ -25,8 +25,8 @@ public class CreateFeedbackValidator : AbstractValidator<CreateFeedbackRequest>,
             .EmailAddress()
             .WithMessage("Invalid email format.");
 
-        //RuleFor(f => f.User)
-        //    .NotNull()
-        //    .WithMessage("User information is required.");
+        RuleFor(f => f.Status)
+            .InclusiveBetween(0, 3)
+            .WithMessage("Invalid status value.");
     }
 }

@@ -11,5 +11,4 @@ public record CreateFeedbackRequest
     public required int Status { get; set; }
     public required string Email { get; set; }
     public List<ImageContent>? FeedbackImages { get; set; }
-    public UserInfo User { get; set; }
 }

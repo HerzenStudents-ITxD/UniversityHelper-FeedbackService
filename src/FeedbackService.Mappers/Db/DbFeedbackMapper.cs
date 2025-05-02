@@ -2,6 +2,8 @@
 using UniversityHelper.FeedbackService.Mappers.Db.Interfaces;
 using UniversityHelper.FeedbackService.Models.Db;
 using UniversityHelper.FeedbackService.Models.Dto.Requests;
+using System;
+using UniversityHelper.Core.Extensions;
 
 namespace UniversityHelper.FeedbackService.Mappers.Db;
 
@@ -16,7 +18,15 @@ public class DbFeedbackMapper : IDbFeedbackMapper
 
     public DbFeedback Map(CreateFeedbackRequest request)
     {
-        var userId = _httpContextAccessor.HttpContext?.User?.FindFirst("sub")?.Value ?? Guid.Empty.ToString();
+        Guid senderId = Guid.Empty;
+
+        try
+        {
+            senderId = _httpContextAccessor.HttpContext.GetUserId();
+         
+        }
+        catch {}
+
         var feedback = new DbFeedback
         {
             Id = Guid.NewGuid(),
@@ -24,7 +34,7 @@ public class DbFeedbackMapper : IDbFeedbackMapper
             SenderEmail = request.Email,
             Status = request.Status,
             Images = new(),
-            SenderId = Guid.Parse(userId),
+            SenderId = senderId,
             CreatedAtUtc = DateTime.UtcNow,
             FeedbackTypes = request.TypeIds.Select(typeId => new DbFeedbackType
             {
