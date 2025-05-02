@@ -7,7 +7,8 @@ public class DbType
 {
     public Guid Id { get; set; }
     public int Type { get; set; }
-    public required string Name { get; set; }
+    public string Name { get; set; } // Строка вида {"ru": "Пожелания", "en": "Wishes", "zh": "愿望"}
+    public bool IsActive { get; set; }
     public List<DbFeedbackType> FeedbackTypes { get; set; }
 
     public DbType(int type, string name)
@@ -15,6 +16,7 @@ public class DbType
         Id = Guid.NewGuid();
         Type = type;
         Name = name;
+        IsActive = true;
         FeedbackTypes = new List<DbFeedbackType>();
     }
 }

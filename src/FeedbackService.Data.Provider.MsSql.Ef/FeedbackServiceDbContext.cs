@@ -35,6 +35,10 @@ public class FeedbackServiceDbContext : DbContext, IDataProvider
             .ToTable("Types")
             .HasKey(t => t.Id);
 
+        modelBuilder.Entity<DbType>()
+            .Property(t => t.IsActive)
+            .HasDefaultValue(true);
+
         modelBuilder.Entity<DbFeedbackType>()
             .ToTable("FeedbackTypes")
             .HasKey(ft => ft.Id);
