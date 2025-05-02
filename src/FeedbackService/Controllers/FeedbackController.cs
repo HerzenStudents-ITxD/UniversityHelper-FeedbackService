@@ -57,4 +57,13 @@ public class FeedbackController : ControllerBase
     {
         return await command.ExecuteAsync(request);
     }
+
+    [HttpGet("getall")]
+    [ProducesResponseType(typeof(OperationResultResponse<FeedbackResponse[]>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    public async Task<OperationResultResponse<FeedbackResponse[]>> GetAllAsync(
+        [FromServices] IGetAllFeedbacksCommand command)
+    {
+        return await command.ExecuteAsync();
+    }
 }

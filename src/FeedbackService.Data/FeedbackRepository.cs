@@ -128,4 +128,13 @@ public class FeedbackRepository : IFeedbackRepository
         await _provider.SaveAsync();
         return true;
     }
+
+    public async Task<List<DbFeedback>> GetAllAsync()
+    {
+        return await _provider.Feedbacks
+            .Include(f => f.Images)
+            .Include(f => f.FeedbackTypes)
+            .ThenInclude(ft => ft.Type)
+            .ToListAsync();
+    }
 }

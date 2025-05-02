@@ -28,4 +28,6 @@ public interface IFeedbackRepository
     Task<bool> HaveSameStatusAsync(List<Guid> feedbackIds, FeedbackStatusType status);
 
     Task<bool> EditStatusesAsync(List<Guid> feedbackIds, FeedbackStatusType status);
+
+    Task<List<DbFeedback>> GetAllAsync();
 }

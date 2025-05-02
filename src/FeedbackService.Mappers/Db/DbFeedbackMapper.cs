@@ -3,7 +3,6 @@ using UniversityHelper.FeedbackService.Mappers.Db.Interfaces;
 using UniversityHelper.FeedbackService.Models.Db;
 using UniversityHelper.FeedbackService.Models.Dto.Requests;
 using System;
-using UniversityHelper.Core.Extensions;
 
 namespace UniversityHelper.FeedbackService.Mappers.Db;
 
@@ -22,10 +21,16 @@ public class DbFeedbackMapper : IDbFeedbackMapper
 
         try
         {
-            senderId = _httpContextAccessor.HttpContext.GetUserId();
-         
+            var userId = _httpContextAccessor.HttpContext?.User?.FindFirst("sub")?.Value;
+            if (!string.IsNullOrEmpty(userId) && Guid.TryParse(userId, out var parsedId))
+            {
+                senderId = parsedId;
+            }
         }
-        catch {}
+        catch (Exception)
+        {
+            senderId = Guid.Empty;
+        }
 
         var feedback = new DbFeedback
         {
